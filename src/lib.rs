@@ -382,12 +382,16 @@ mod tests {
     #[test]
     #[cfg(feature = "bincode")]
     fn bincode_roundtrip() {
-        let cfg = bincode::config::standard();
+        let cfg = bincode::config::standard().with_fixed_int_encoding();
 
         for n in 0..u16::MAX {
             let expected = Serial(n);
-            let bytes = bincode::encode_to_vec(expected, cfg).unwrap();
-            let (actual, _): (Serial, _) = bincode::decode_from_slice(&bytes, cfg).unwrap();
+
+            let mut buf = [0_u8; 2];
+            let n_bytes = bincode::encode_into_slice(expected, &mut buf, cfg).unwrap();
+            assert_eq!(2, n_bytes);
+
+            let (actual, _): (Serial, _) = bincode::decode_from_slice(&buf, cfg).unwrap();
             assert_eq!(expected, actual);
         }
     }
