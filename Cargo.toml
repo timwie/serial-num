@@ -1,0 +1,22 @@
+[package]
+name = "serial-num"
+version = "0.1.0"
+authors = ["Tim Wiechers <mail@timwie.dev>"]
+repository = "https://github.com/timwie/serial-num"
+categories = ["no-std"]
+description = "Serial number type with wraparound"
+keywords = ["serial", "number", "rfc-1982"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+
+# TODO: rust-version
+# https://github.com/bincode-org/bincode/issues/543
+
+[dependencies]
+bincode = { version = "^2.0.0-rc.2", optional = true }
+serde = { version = "~1", features = ["derive"], optional = true }
+
+[features]
+default = []
+bincode = ["dep:bincode"]
+serde = ["dep:serde"]
