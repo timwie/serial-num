@@ -1,7 +1,9 @@
-# serial-num &emsp; ![Latest Version] ![Documentation] ![License]
+# serial-num &emsp; [![Latest Version]][crates.io] [![Documentation]][docs.rs] ![License]
 
 [Latest Version]: https://img.shields.io/crates/v/serial-num
+[crates.io]: https://crates.io/crates/serial-num
 [Documentation]: https://img.shields.io/docsrs/serial-num
+[docs.rs]: https://docs.rs/serial-num/latest/serial_num/
 [License]: https://img.shields.io/crates/l/serial-num
 
 TODO
