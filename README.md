@@ -1,4 +1,4 @@
-# `serial-num` &emsp; ![Latest Version] ![Documentation] ![License]
+# serial-num &emsp; ![Latest Version] ![Documentation] ![License]
 
 [Latest Version]: https://img.shields.io/crates/v/serial-num
 [Documentation]: https://img.shields.io/docsrs/serial-num
@@ -12,3 +12,10 @@ TODO
 
 [bincode]: https://crates.io/crates/bincode
 [serde]: https://crates.io/crates/serde
+
+## Changelog
+### [0.1.1] - 2023-01-06
+#### Fixed
+* Disabled the `std` features of bincode/serde to enable `no_std` support.
+
+[0.1.1]: https://github.com/timwie/serial-num/releases/tag/v0.1.1
