@@ -11,7 +11,7 @@ jobs:
           - stable
           - beta
           - nightly
-          - 1.56  # MSRV
+          - 1.60  # MSRV
 
     steps:
       - name: Check out repository
