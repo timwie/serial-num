@@ -66,7 +66,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: tarpaulin
-          args: --out Xml
+          args: --out Xml --all-features
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2

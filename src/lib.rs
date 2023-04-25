@@ -211,6 +211,13 @@ mod tests {
     use super::*;
 
     #[test]
+    fn increase_nan() {
+        let mut nan = Serial::NAN;
+        nan.increase();
+        assert_eq!(nan, Serial::NAN)
+    }
+
+    #[test]
     fn cmp1() {
         let a = Serial::default();
         let b = Serial(MAX_U16);
