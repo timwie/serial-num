@@ -28,6 +28,7 @@ README is forthcoming :construction:
 ## Changelog
 ### Unreleased
 * Set MSRV to `1.60.0`
+* Up `bincode` to `^2.0.0-rc.3`
 
 ### [0.1.1] - 2023-01-06
 * Disabled the `std` features of bincode/serde to enable `no_std` support.
