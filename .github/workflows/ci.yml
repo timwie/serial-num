@@ -55,3 +55,19 @@ jobs:
         with:
           command: clippy
           args: -- -D warnings
+
+      - name: Install Tarpaulin
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-tarpaulin
+
+      - name: cargo tarpaulin
+        uses: actions-rs/cargo@v1
+        with:
+          command: tarpaulin
+          args: --out Xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        continue-on-error: true
