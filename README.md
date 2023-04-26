@@ -19,6 +19,27 @@ a day, without having to worry about overflow. The niche benefit of this type
 is that it only uses the space of a `u16`, with the problem of overflow solved
 by wraparound.
 
+
+```toml
+[dependencies]
+serial-num = "0.2"
+
+# or with addtional features:
+[dependencies]
+serial-num = { version = "0.2", features = ["serde"] }
+```
+
+The following feature flags are available:
+* `bincode`: Implements [bincode]'s `Decode/Encode` for the `Serial` type
+* `serde`: Implements [serde]'s `Deserialize/Serialize` for the `Serial` type
+
+[bincode]: https://crates.io/crates/bincode
+[serde]: https://crates.io/crates/serde
+
+The Minimum Supported Rust Version (MSRV) for this crate is `1.60.0`.
+
+<br>
+
 ## Usage
 ### Simple example
 ```rust
@@ -107,17 +128,9 @@ assert!(!(nan < default) && !(nan >= default));
 
 <br>
 
-## Feature Flags
-* `bincode`: Implements [bincode]'s `Decode/Encode` for the `Serial` type
-* `serde`: Implements [serde]'s `Deserialize/Serialize` for the `Serial` type
-
-[bincode]: https://crates.io/crates/bincode
-[serde]: https://crates.io/crates/serde
-
-<br>
-
 ## Changelog
-### Unreleased
+### [0.2.0] - 2023-04-27
+* Improved documentation
 * Set MSRV to `1.60.0`
 * Up `bincode` to `^2.0.0-rc.3`
 
@@ -125,3 +138,21 @@ assert!(!(nan < default) && !(nan >= default));
 * Disabled the `std` features of bincode/serde to enable `no_std` support.
 
 [0.1.1]: https://github.com/timwie/serial-num/releases/tag/v0.1.1
+[0.2.0]: https://github.com/timwie/serial-num/releases/tag/v0.2.0
+
+<br>
+
+## License
+
+<sup>
+Licensed under either of <a href="LICENSE-APACHE">Apache License, Version
+2.0</a> or <a href="LICENSE-MIT">MIT license</a> at your option.
+</sup>
+
+<br>
+
+<sub>
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
+be dual licensed as above, without any additional terms or conditions.
+</sub>
