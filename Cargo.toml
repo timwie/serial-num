@@ -15,9 +15,6 @@ rust-version = "1.60"
 # TODO: rust-version
 # https://github.com/bincode-org/bincode/issues/543
 
-[lib]
-doctest = false
-
 [dependencies.bincode]
 version = "^2.0.0-rc.3"
 default-features = false
