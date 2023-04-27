@@ -21,6 +21,11 @@ default-features = false
 features = ["derive"]
 optional = true
 
+[dependencies.borsh]
+version = "~0"
+default-features = false
+optional = true
+
 [dependencies.serde]
 version = "~1"
 default-features = false
@@ -30,4 +35,5 @@ optional = true
 [features]
 default = []
 bincode = ["dep:bincode"]
+borsh = ["dep:borsh"]
 serde = ["dep:serde"]

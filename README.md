@@ -31,9 +31,11 @@ serial-num = { version = "0.2", features = ["serde"] }
 
 The following feature flags are available:
 * `bincode`: Implements [bincode]'s `Decode/Encode` for the `Serial` type
+* `borsh`: Implements [borsh]'s `BorshDeserialize/BorshSerialize` for the `Serial` type
 * `serde`: Implements [serde]'s `Deserialize/Serialize` for the `Serial` type
 
 [bincode]: https://crates.io/crates/bincode
+[borsh]: https://crates.io/crates/borsh
 [serde]: https://crates.io/crates/serde
 
 The Minimum Supported Rust Version (MSRV) for this crate is `1.60.0`.
@@ -129,6 +131,9 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### Unreleased
+* Add `borsh` feature
+
 ### [0.2.0] - 2023-04-27
 * Improved documentation
 * Set MSRV to `1.60.0`

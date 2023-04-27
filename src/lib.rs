@@ -117,6 +117,10 @@ use core::ops::Add;
 /// this type in an `Option` if only some items are assigned a serial number.
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "bincode", derive(bincode::Decode, bincode::Encode))]
+#[cfg_attr(
+    feature = "borsh",
+    derive(borsh::BorshDeserialize, borsh::BorshSerialize)
+)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Serial(u16);
 
@@ -484,6 +488,22 @@ mod tests {
             assert_eq!(2, n_bytes);
 
             let (actual, _): (Serial, _) = bincode::decode_from_slice(&buf, cfg).unwrap();
+            assert_eq!(expected, actual);
+        }
+    }
+
+    #[test]
+    #[cfg(feature = "borsh")]
+    fn borsh_roundtrip() {
+        use borsh::{BorshDeserialize, BorshSerialize};
+
+        for n in 0..u16::MAX {
+            let expected = Serial(n);
+
+            let encoded = expected.try_to_vec().unwrap();
+            assert_eq!(2, encoded.len());
+
+            let actual = Serial::try_from_slice(&encoded).unwrap();
             assert_eq!(expected, actual);
         }
     }
