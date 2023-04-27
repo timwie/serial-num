@@ -24,7 +24,7 @@ by wraparound.
 [dependencies]
 serial-num = "0.2"
 
-# or with addtional features:
+# or with additional features:
 [dependencies]
 serial-num = { version = "0.2", features = ["serde"] }
 ```
