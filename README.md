@@ -38,7 +38,7 @@ The following feature flags are available:
 [borsh]: https://crates.io/crates/borsh
 [serde]: https://crates.io/crates/serde
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.60.0`.
+The Minimum Supported Rust Version (MSRV) for this crate is `1.61.0`.
 
 <br>
 
@@ -132,6 +132,7 @@ assert!(!(nan < default) && !(nan >= default));
 
 ## Changelog
 ### Unreleased
+* Set MSRV to `1.61.0`
 * Add `borsh` feature
 
 ### [0.2.0] - 2023-04-27

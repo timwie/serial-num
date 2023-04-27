@@ -8,9 +8,7 @@ description = "Serial number type with wraparound"
 keywords = ["serial", "number", "rfc-1982"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
-
-# MSRV is 1.60, which adds namespaced-features with "dep:" prefix
-rust-version = "1.60"
+rust-version = "1.61"
 
 # TODO: rust-version
 # https://github.com/bincode-org/bincode/issues/543
