@@ -58,7 +58,7 @@ jobs:
         run: cargo tarpaulin --out Xml --all-features
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         continue-on-error: true
 
   publish:
