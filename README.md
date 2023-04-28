@@ -136,6 +136,10 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### [0.3.1] - 2023-04-28
+* Add `documentation` to `Cargo.toml`
+* Fix outdated README
+
 ### [0.3.0] - 2023-04-28
 * Set MSRV to `1.63.0`
 * Add `borsh` feature
@@ -153,6 +157,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.1.1]: https://github.com/timwie/serial-num/releases/tag/v0.1.1
 [0.2.0]: https://github.com/timwie/serial-num/releases/tag/v0.2.0
 [0.3.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.0
+[0.3.1]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
 
 <br>
 
