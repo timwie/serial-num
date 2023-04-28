@@ -121,6 +121,13 @@ use core::ops::Add;
     feature = "borsh",
     derive(borsh::BorshDeserialize, borsh::BorshSerialize)
 )]
+#[cfg_attr(
+    feature = "rkyv",
+    derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize),
+    archive(compare(PartialEq)),
+    archive_attr(derive(Clone, Copy, Debug))
+)]
+#[cfg_attr(feature = "rkyv-safe", archive(check_bytes))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Serial(u16);
 
@@ -505,6 +512,36 @@ mod tests {
 
             let actual = Serial::try_from_slice(&encoded).unwrap();
             assert_eq!(expected, actual);
+        }
+    }
+
+    #[test]
+    #[cfg(feature = "rkyv")]
+    fn rkyv_roundtrip() {
+        use rkyv::{Archive, Deserialize, Serialize};
+
+        for n in 0..u16::MAX {
+            let expected = Serial(n);
+
+            let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+
+            let actual = unsafe { rkyv::archived_root::<Serial>(&bytes[..]) };
+            assert_eq!(actual, &expected);
+        }
+    }
+
+    #[test]
+    #[cfg(feature = "rkyv-safe")]
+    fn rkyv_safe_roundtrip() {
+        use rkyv::{Archive, Deserialize, Serialize};
+
+        for n in 0..u16::MAX {
+            let expected = Serial(n);
+
+            let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+
+            let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
+            assert_eq!(actual, &expected);
         }
     }
 }

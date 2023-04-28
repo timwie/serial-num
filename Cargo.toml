@@ -10,9 +10,6 @@ license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.61"
 
-# TODO: rust-version
-# https://github.com/bincode-org/bincode/issues/543
-
 [dependencies.bincode]
 version = "^2.0.0-rc.3"
 default-features = false
@@ -20,6 +17,11 @@ features = ["derive"]
 optional = true
 
 [dependencies.borsh]
+version = "~0"
+default-features = false
+optional = true
+
+[dependencies.rkyv]
 version = "~0"
 default-features = false
 optional = true
@@ -34,4 +36,6 @@ optional = true
 default = []
 bincode = ["dep:bincode"]
 borsh = ["dep:borsh"]
+rkyv = ["rkyv/size_32"]
+rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
