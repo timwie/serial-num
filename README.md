@@ -22,20 +22,20 @@ by wraparound.
 
 ```toml
 [dependencies]
-serial-num = "0.2"
+serial-num = "0.3"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.2", features = ["serde"] }
+serial-num = { version = "0.3", features = ["serde"] }
 ```
 
-The following feature flags are available:
-* `arbitrary`: Implements [arbitrary]'s `Arbitrary` for the `Serial` type
-* `bincode`: Implements [bincode]'s `Decode/Encode` for the `Serial` type
-* `borsh`: Implements [borsh]'s `BorshDeserialize/BorshSerialize` for the `Serial` type
-* `rkyv`: Implements [rkyv]'s `Archive/Deserialize/Serialize` for the `Serial` type
-* `rkyv-safe`: Additionally enables [rkyv]’s safe API
-* `serde`: Implements [serde]'s `Deserialize/Serialize` for the `Serial` type
+The following feature flags implement additional traits for the `Serial` type:
+* `arbitrary`: derives [arbitrary]'s `Arbitrary`
+* `bincode`: derives [bincode]'s `Decode/Encode`
+* `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
+* `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
+* `rkyv-safe`: additionally enables [rkyv]’s safe API
+* `serde`: derives [serde]'s `Deserialize/Serialize`
 
 [arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
@@ -136,7 +136,7 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### [0.2.0] - 2023-04-28
+### [0.3.0] - 2023-04-28
 * Set MSRV to `1.63.0`
 * Add `borsh` feature
 * Add `rkyv` and `rkyv-safe` features
