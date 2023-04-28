@@ -84,7 +84,7 @@
 //! assert_eq!(None, nan.partial_cmp(&default));
 //! assert!(!(nan < default) && !(nan >= default));
 //! ```
-#![no_std]
+#![cfg_attr(not(feature = "arbitrary"), no_std)]
 
 use core::cmp::Ordering;
 use core::ops::Add;
@@ -116,6 +116,7 @@ use core::ops::Add;
 /// `NAN` value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[cfg_attr(feature = "bincode", derive(bincode::Decode, bincode::Encode))]
 #[cfg_attr(
     feature = "borsh",
@@ -543,5 +544,17 @@ mod tests {
             let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
             assert_eq!(actual, &expected);
         }
+    }
+
+    #[test]
+    #[cfg(feature = "arbitrary")]
+    fn arbitrary() {
+        use arbitrary::{Arbitrary, Unstructured};
+
+        let raw_data: &[u8] = "get_raw_data_from_fuzzer()".as_bytes();
+
+        let mut unstructured = Unstructured::new(raw_data);
+
+        _ = Serial::arbitrary(&mut unstructured).unwrap();
     }
 }

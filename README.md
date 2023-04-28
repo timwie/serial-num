@@ -30,12 +30,14 @@ serial-num = { version = "0.2", features = ["serde"] }
 ```
 
 The following feature flags are available:
+* `arbitrary`: Implements [arbitrary]'s `Arbitrary` for the `Serial` type
 * `bincode`: Implements [bincode]'s `Decode/Encode` for the `Serial` type
 * `borsh`: Implements [borsh]'s `BorshDeserialize/BorshSerialize` for the `Serial` type
 * `rkyv`: Implements [rkyv]'s `Archive/Deserialize/Serialize` for the `Serial` type
 * `rkyv-safe`: Additionally enables [rkyv]’s safe API
 * `serde`: Implements [serde]'s `Deserialize/Serialize` for the `Serial` type
 
+[arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
 [borsh]: https://crates.io/crates/borsh
 [rkyv]: https://crates.io/crates/rkyv
@@ -138,6 +140,7 @@ assert!(!(nan < default) && !(nan >= default));
 * Set MSRV to `1.61.0`
 * Add `borsh` feature
 * Add `rkyv` and `rkyv-safe` features
+* Add `arbitrary` feature
 
 ### [0.2.0] - 2023-04-27
 * Improved documentation

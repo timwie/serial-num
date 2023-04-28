@@ -10,6 +10,11 @@ license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.61"
 
+[dependencies.arbitrary]
+version = "~1"
+features = ["derive"]
+optional = true
+
 [dependencies.bincode]
 version = "^2.0.0-rc.3"
 default-features = false
@@ -34,6 +39,7 @@ optional = true
 
 [features]
 default = []
+arbitrary = ["dep:arbitrary"]
 bincode = ["dep:bincode"]
 borsh = ["dep:borsh"]
 rkyv = ["rkyv/size_32"]

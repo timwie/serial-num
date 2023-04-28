@@ -47,7 +47,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --all-features --target thumbv6m-none-eabi
+          args: --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
 
       - name: cargo test
         uses: actions-rs/cargo@v1
