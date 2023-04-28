@@ -136,22 +136,23 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### Unreleased
+### [0.2.0] - 2023-04-28
 * Set MSRV to `1.63.0`
 * Add `borsh` feature
 * Add `rkyv` and `rkyv-safe` features
 * Add `arbitrary` feature
 
 ### [0.2.0] - 2023-04-27
-* Improved documentation
 * Set MSRV to `1.60.0`
 * Up `bincode` to `^2.0.0-rc.3`
+* Improved documentation
 
 ### [0.1.1] - 2023-01-06
 * Disabled the `std` features of bincode/serde to enable `no_std` support.
 
 [0.1.1]: https://github.com/timwie/serial-num/releases/tag/v0.1.1
 [0.2.0]: https://github.com/timwie/serial-num/releases/tag/v0.2.0
+[0.3.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.0
 
 <br>
 

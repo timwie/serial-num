@@ -1,6 +1,6 @@
 [package]
 name = "serial-num"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Tim Wiechers <mail@timwie.dev>"]
 repository = "https://github.com/timwie/serial-num"
 categories = ["no-std"]
