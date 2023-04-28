@@ -36,47 +36,26 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: cargo build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --all-features
+        run: cargo build --all-features
 
       - name: cargo build for non_std
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
+        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
 
       - name: cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --all-features
+        run: cargo test --all-features
 
       - name: cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+        run: cargo fmt --all -- --check
 
       - name: cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+        run: cargo clippy -- -D warnings
 
       - name: Install Tarpaulin
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-tarpaulin
+        run: cargo install cargo-tarpaulin
         continue-on-error: true
 
       - name: cargo tarpaulin
-        uses: actions-rs/cargo@v1
-        with:
-          command: tarpaulin
-          args: --out Xml --all-features
+        run: cargo tarpaulin --out Xml --all-features
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
