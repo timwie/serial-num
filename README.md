@@ -43,7 +43,7 @@ The following feature flags are available:
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.61.0`.
+The Minimum Supported Rust Version (MSRV) for this crate is `1.63.0`.
 
 <br>
 
@@ -137,7 +137,7 @@ assert!(!(nan < default) && !(nan >= default));
 
 ## Changelog
 ### Unreleased
-* Set MSRV to `1.61.0`
+* Set MSRV to `1.63.0`
 * Add `borsh` feature
 * Add `rkyv` and `rkyv-safe` features
 * Add `arbitrary` feature
