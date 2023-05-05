@@ -636,7 +636,7 @@ fn check_bincode() {
 #[kani::proof]
 fn check_borsh() {
     use borsh::{BorshDeserialize, BorshSerialize};
-    
+
     let expected = Serial(kani::any());
 
     let encoded = expected.try_to_vec().unwrap();
