@@ -20,6 +20,7 @@ rustflags = [
     "-Wclippy::as-conversions",
     "-Wclippy::cast-possible-wrap",
     "-Wclippy::integer_arithmetic",
+    "-Wclippy::missing_trait_methods",
 
     "-Aclippy::arithmetic_side_effects",
     "-Aclippy::blanket-clippy-restriction-lints",
