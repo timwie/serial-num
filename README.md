@@ -22,11 +22,11 @@ by wraparound.
 
 ```toml
 [dependencies]
-serial-num = "0.3"
+serial-num = "0.4"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.3", features = ["serde"] }
+serial-num = { version = "0.4", features = ["serde"] }
 ```
 
 The following feature flags implement additional traits for the `Serial` type:
