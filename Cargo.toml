@@ -9,7 +9,7 @@ description = "Serial number type with wraparound"
 keywords = ["serial", "number", "rfc-1982"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
-rust-version = "1.63"
+rust-version = "1.66"
 exclude = [".github/"]
 
 [dependencies.arbitrary]

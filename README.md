@@ -43,7 +43,7 @@ The following feature flags implement additional traits for the `Serial` type:
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.63.0`.
+The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
 
 <br>
 
@@ -136,6 +136,10 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### Unreleased
+* Set MSRV to `1.66.0`
+* Add some `#[must_use]` attributes
+
 ### [0.3.1] - 2023-04-28
 * Add `documentation` to `Cargo.toml`
 * Fix outdated README
