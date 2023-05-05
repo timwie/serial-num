@@ -61,6 +61,17 @@ jobs:
         uses: codecov/codecov-action@v3
         continue-on-error: true
 
+  verify:
+    name: Model checking
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Run Kani Verifier
+        uses: model-checking/kani-github-action@v0.27
+        args: --all-features
+
   publish:
     name: Upload release to crates.io
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')

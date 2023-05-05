@@ -519,8 +519,6 @@ mod tests {
     #[test]
     #[cfg(feature = "rkyv")]
     fn rkyv_roundtrip() {
-        use rkyv::{Archive, Deserialize, Serialize};
-
         for n in 0..u16::MAX {
             let expected = Serial(n);
 
@@ -534,8 +532,6 @@ mod tests {
     #[test]
     #[cfg(feature = "rkyv-safe")]
     fn rkyv_safe_roundtrip() {
-        use rkyv::{Archive, Deserialize, Serialize};
-
         for n in 0..u16::MAX {
             let expected = Serial(n);
 
@@ -557,4 +553,117 @@ mod tests {
 
         _ = Serial::arbitrary(&mut unstructured).unwrap();
     }
+}
+
+// Kani proofs
+// https://model-checking.github.io/kani/getting-started.html
+// $ cargo install kani-verifier
+// $ cargo kani setup
+// $ kani src/lib.rs
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_increase() {
+    let mut s = Serial(kani::any());
+    s.increase();
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_increase_get() {
+    let mut s = Serial(kani::any());
+    let _ = s.increase_get();
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_get_increase() {
+    let mut s = Serial(kani::any());
+    let _ = s.get_increase();
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_dist() {
+    let a = Serial(kani::any());
+    let b = Serial(kani::any());
+    let _ = a.dist(b);
+    let _ = b.dist(a);
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_diff() {
+    let a = Serial(kani::any());
+    let b = Serial(kani::any());
+    let _ = a.diff(b);
+    let _ = b.diff(a);
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_add() {
+    let _ = Serial(kani::any()) + kani::any();
+}
+
+#[cfg(kani)]
+#[kani::proof]
+fn check_cmp() {
+    let a = Serial(kani::any());
+    let b = Serial(kani::any());
+    let _ = a.partial_cmp(&b);
+    let _ = a.cmp(&b);
+    let _ = b.partial_cmp(&a);
+    let _ = b.cmp(&a);
+}
+
+#[cfg(all(kani, feature = "bincode"))]
+#[kani::proof]
+fn check_bincode() {
+    let cfg = bincode::config::standard().with_fixed_int_encoding();
+
+    let expected = Serial(kani::any());
+
+    let mut buf = [0_u8; 2];
+    let n_bytes = bincode::encode_into_slice(expected, &mut buf, cfg).unwrap();
+    assert_eq!(2, n_bytes);
+
+    let (actual, _): (Serial, _) = bincode::decode_from_slice(&buf, cfg).unwrap();
+    assert_eq!(expected, actual);
+}
+
+#[cfg(all(kani, feature = "borsh"))]
+#[kani::proof]
+fn check_borsh() {
+    use borsh::{BorshDeserialize, BorshSerialize};
+    
+    let expected = Serial(kani::any());
+
+    let encoded = expected.try_to_vec().unwrap();
+    assert_eq!(2, encoded.len());
+
+    let actual = Serial::try_from_slice(&encoded).unwrap();
+    assert_eq!(expected, actual);
+}
+
+#[cfg(all(kani, feature = "rkyv"))]
+// TODO #[kani::proof]
+fn check_rkyv() {
+    let expected = Serial(kani::any());
+
+    let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+
+    let actual = unsafe { rkyv::archived_root::<Serial>(&bytes[..]) };
+    assert_eq!(actual, &expected);
+}
+
+#[cfg(all(kani, feature = "rkyv-safe"))]
+// TODO #[kani::proof]
+fn check_rkyv_safe() {
+    let expected = Serial(kani::any());
+
+    let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+
+    let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
+    assert_eq!(actual, &expected);
 }
