@@ -136,7 +136,7 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### Unreleased
+### [0.4.0] - 2023-05-05
 * Set MSRV to `1.66.0`
 * Add some `#[must_use]` attributes
 
@@ -162,6 +162,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.2.0]: https://github.com/timwie/serial-num/releases/tag/v0.2.0
 [0.3.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.0
 [0.3.1]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
+[0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
 
 <br>
 
