@@ -115,6 +115,7 @@ use core::ops::Add;
 /// The final value in our number space, `u16::MAX`, is reserved for the special
 /// `NAN` value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
+#[must_use]
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[cfg_attr(feature = "bincode", derive(bincode::Decode, bincode::Encode))]
@@ -147,6 +148,7 @@ impl Serial {
 
     /// Returns `true` if this number is [`NAN`](Self::NAN).
     #[inline]
+    #[must_use]
     pub fn is_nan(self) -> bool {
         self == Self::NAN
     }
@@ -186,6 +188,7 @@ impl Serial {
     /// If one of the number is `NAN`, the maximum distance of `32767` is returned.
     /// If both are `NAN`, we say the distance is `0`.
     #[inline]
+    #[must_use]
     pub fn dist(self, other: Self) -> u16 {
         if self.is_nan() && other.is_nan() {
             return 0;
@@ -219,6 +222,7 @@ impl Serial {
     /// If one of the number is `NAN`, the maximum difference of `(-)32767` is returned.
     /// If both are `NAN`, we say the difference is `0`.
     #[inline]
+    #[must_use]
     pub fn diff(self, other: Self) -> i16 {
         let dist = self.dist(other);
         if let Some(Ordering::Less) = self.partial_cmp(&other) {
@@ -244,7 +248,7 @@ impl Add<u16> for Serial {
         if self.is_nan() {
             return self;
         }
-        let n = (self.0 as u32 + rhs as u32) % (NAN_U32);
+        let n = (u32::from(self.0) + u32::from(rhs)) % (NAN_U32);
         Self(n as u16)
     }
 }
@@ -262,22 +266,7 @@ impl PartialOrd for Serial {
         if self.is_nan() || other.is_nan() {
             return None;
         }
-
-        if self.0 == other.0 {
-            return Some(Ordering::Equal);
-        }
-
-        let a = self.0 as i32;
-        let b = other.0 as i32;
-
-        // a < b if either:
-        //  - b has the greater number and is within our window
-        //  - a has the greater number and is outside our window
-        if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
-            Some(Ordering::Less)
-        } else {
-            Some(Ordering::Greater)
-        }
+        Some(self.cmp(other))
     }
 }
 
@@ -297,8 +286,20 @@ impl Ord for Serial {
             Ordering::Less
         } else if other.is_nan() {
             Ordering::Greater
+        } else if self.0 == other.0 {
+            Ordering::Equal
         } else {
-            self.partial_cmp(other).unwrap()
+            let a = i32::from(self.0);
+            let b = i32::from(other.0);
+
+            // a < b if either:
+            //  - b has the greater number and is within our window
+            //  - a has the greater number and is outside our window
+            if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
+                Ordering::Less
+            } else {
+                Ordering::Greater
+            }
         }
     }
 }
