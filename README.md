@@ -175,7 +175,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.3.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.0
 [0.3.1]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
 [0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.4.0
-[0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
+[0.5.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
 
 <br>
 
