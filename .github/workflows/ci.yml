@@ -46,6 +46,32 @@ jobs:
       - name: cargo test
         run: cargo test --all-features
 
+  coverage:
+    name: Upload test coverage to Codecov (stable)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          targets: thumbv6m-none-eabi
+
+      - name: Use cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin
         continue-on-error: true
@@ -58,7 +84,7 @@ jobs:
         continue-on-error: true
 
   lint:
-    name: Lint crate on stable
+    name: Lint crate (stable)
     runs-on: ubuntu-latest
 
     steps:
