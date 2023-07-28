@@ -31,16 +31,16 @@ serial-num = { version = "0.4", features = ["serde"] }
 
 The following feature flags implement additional traits for the `Serial` type:
 * `arbitrary`: derives [arbitrary]'s `Arbitrary`
-  (incompatible with `no_std`)
+  (⚠️ incompatible with `no_std`)
 * `bincode`: derives [bincode]'s `Decode/Encode`
 * `bitcode`: derives [bitcode]'s `Decode/Encode`
-  (incompatible with `no_std`)
+  (⚠️ incompatible with `no_std`)
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
 * `serde`: derives [serde]'s `Deserialize/Serialize`
 * `speedy`: derives [speedy]'s `Readable/Writable`
-  (incompatible with `no_std`)
+  (⚠️ incompatible with `no_std`)
 
 [arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
@@ -143,6 +143,11 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### Unreleased
+* Fix `rkyv` feature usage without `rkyv-safe`
+* Add `bitcode` feature
+* Add `speedy` feature
+
 ### [0.4.0] - 2023-05-05
 * Set MSRV to `1.66.0`
 * Add some `#[must_use]` attributes
