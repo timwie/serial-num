@@ -86,6 +86,7 @@
 //! ```
 #![cfg_attr(not(any(
     feature = "arbitrary",
+    feature = "bitcode",
     feature = "speedy",
 )), no_std)]
 
@@ -122,6 +123,7 @@ use core::ops::Add;
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[cfg_attr(feature = "bincode", derive(bincode::Decode, bincode::Encode))]
+#[cfg_attr(feature = "bitcode", derive(bitcode::Decode, bitcode::Encode))]
 #[cfg_attr(
     feature = "borsh",
     derive(borsh::BorshDeserialize, borsh::BorshSerialize)
@@ -574,13 +576,21 @@ mod tests {
             assert_eq!(expected, actual);
         }
     }
-}
 
-// Kani proofs
-// https://model-checking.github.io/kani/getting-started.html
-// $ cargo install kani-verifier
-// $ cargo kani setup
-// $ kani src/lib.rs
+    #[test]
+    #[cfg(feature = "bitcode")]
+    fn bitcode_roundtrip() {
+        for n in 0..u16::MAX {
+            let expected = Serial(n);
+
+            let encoded = bitcode::encode(&expected).unwrap();
+            assert_eq!(2, encoded.len());
+
+            let actual: Serial = bitcode::decode(&encoded).unwrap();
+            assert_eq!(expected, actual);
+        }
+    }
+}
 
 #[cfg(kani)]
 #[kani::proof]
@@ -687,4 +697,30 @@ fn check_rkyv_safe() {
 
     let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
     assert_eq!(actual, &expected);
+}
+
+#[cfg(all(kani, feature = "speedy"))]
+#[kani::proof]
+fn check_speedy() {
+    use speedy::{Readable, Writable};
+
+    let expected = Serial(kani::any());
+
+    let encoded = expected.write_to_vec().unwrap();
+    assert_eq!(2, encoded.len());
+
+    let actual = Serial::read_from_buffer(&encoded).unwrap();
+    assert_eq!(expected, actual);
+}
+
+#[cfg(all(kani, feature = "bitcode"))]
+#[kani::proof]
+fn check_bitcode() {
+    let expected = Serial(kani::any());
+
+    let encoded = bitcode::encode(&expected).unwrap();
+    assert_eq!(2, encoded.len());
+
+    let actual: Serial = bitcode::decode(&encoded).unwrap();
+    assert_eq!(expected, actual);
 }

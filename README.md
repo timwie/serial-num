@@ -33,6 +33,8 @@ The following feature flags implement additional traits for the `Serial` type:
 * `arbitrary`: derives [arbitrary]'s `Arbitrary`
   (incompatible with `no_std`)
 * `bincode`: derives [bincode]'s `Decode/Encode`
+* `bitcode`: derives [bitcode]'s `Decode/Encode`
+  (incompatible with `no_std`)
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
@@ -42,6 +44,7 @@ The following feature flags implement additional traits for the `Serial` type:
 
 [arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
+[bitcode]: https://crates.io/crates/bitcode
 [borsh]: https://crates.io/crates/borsh
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde

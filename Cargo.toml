@@ -23,6 +23,10 @@ default-features = false
 features = ["derive"]
 optional = true
 
+[dependencies.bitcode]
+version = "~0"
+optional = true
+
 [dependencies.borsh]
 version = "~0"
 default-features = false
@@ -47,6 +51,7 @@ optional = true
 default = []
 arbitrary = ["dep:arbitrary"]
 bincode = ["dep:bincode"]
+bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
 rkyv = ["rkyv/size_32"]
 rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
