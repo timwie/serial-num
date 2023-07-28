@@ -84,7 +84,10 @@
 //! assert_eq!(None, nan.partial_cmp(&default));
 //! assert!(!(nan < default) && !(nan >= default));
 //! ```
-#![cfg_attr(not(feature = "arbitrary"), no_std)]
+#![cfg_attr(not(any(
+    feature = "arbitrary",
+    feature = "speedy",
+)), no_std)]
 
 use core::cmp::Ordering;
 use core::ops::Add;
@@ -131,6 +134,7 @@ use core::ops::Add;
 )]
 #[cfg_attr(feature = "rkyv-safe", archive(check_bytes))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "speedy", derive(speedy::Readable, speedy::Writable))]
 pub struct Serial(u16);
 
 const NAN_U16: u16 = u16::MAX;
@@ -553,6 +557,22 @@ mod tests {
         let mut unstructured = Unstructured::new(raw_data);
 
         _ = Serial::arbitrary(&mut unstructured).unwrap();
+    }
+
+    #[test]
+    #[cfg(feature = "speedy")]
+    fn speedy_roundtrip() {
+        use speedy::{Readable, Writable};
+
+        for n in 0..u16::MAX {
+            let expected = Serial(n);
+
+            let encoded = expected.write_to_vec().unwrap();
+            assert_eq!(2, encoded.len());
+
+            let actual = Serial::read_from_buffer(&encoded).unwrap();
+            assert_eq!(expected, actual);
+        }
     }
 }
 

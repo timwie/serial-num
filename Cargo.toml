@@ -39,6 +39,10 @@ default-features = false
 features = ["derive"]
 optional = true
 
+[dependencies.speedy]
+version = "~0"
+optional = true
+
 [features]
 default = []
 arbitrary = ["dep:arbitrary"]
@@ -47,3 +51,4 @@ borsh = ["dep:borsh"]
 rkyv = ["rkyv/size_32"]
 rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
+speedy = ["dep:speedy"]
