@@ -22,11 +22,11 @@ by wraparound.
 
 ```toml
 [dependencies]
-serial-num = "0.4"
+serial-num = "0.5"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.4", features = ["serde"] }
+serial-num = { version = "0.5", features = ["serde"] }
 ```
 
 The following feature flags implement additional traits for the `Serial` type:
@@ -143,7 +143,7 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### Unreleased
+### [0.5.0] - 2023-07-28
 * Fix `rkyv` feature usage without `rkyv-safe`
 * Add `bitcode` feature
 * Add `speedy` feature
@@ -174,7 +174,8 @@ assert!(!(nan < default) && !(nan >= default));
 [0.2.0]: https://github.com/timwie/serial-num/releases/tag/v0.2.0
 [0.3.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.0
 [0.3.1]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
-[0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
+[0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.4.0
+[0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
 
 <br>
 
