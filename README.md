@@ -31,6 +31,7 @@ serial-num = { version = "0.4", features = ["serde"] }
 
 The following feature flags implement additional traits for the `Serial` type:
 * `arbitrary`: derives [arbitrary]'s `Arbitrary`
+  (incompatible with `no_std`)
 * `bincode`: derives [bincode]'s `Decode/Encode`
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
