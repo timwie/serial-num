@@ -3,10 +3,11 @@ on: push
 name: Continuous integration
 
 jobs:
-  ci:
-    name: Build, test and lint crate
+  test:
+    name: Build and test crate
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         rust:
           - stable
@@ -45,12 +46,6 @@ jobs:
       - name: cargo test
         run: cargo test --all-features
 
-      - name: cargo fmt
-        run: cargo fmt --all -- --check
-
-      - name: cargo clippy
-        run: cargo clippy
-
       - name: Install Tarpaulin
         run: cargo install cargo-tarpaulin
         continue-on-error: true
@@ -61,6 +56,38 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         continue-on-error: true
+
+  lint:
+    name: Lint crate on stable
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          targets: thumbv6m-none-eabi
+
+      - name: Use cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: cargo fmt
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy
+        run: cargo clippy
 
   verify:
     name: Model checking
