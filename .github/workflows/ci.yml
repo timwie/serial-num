@@ -4,6 +4,7 @@ name: Continuous integration
 
 jobs:
   ci:
+    name: Build, test and lint crate
     runs-on: ubuntu-latest
     strategy:
       matrix:

@@ -84,11 +84,10 @@
 //! assert_eq!(None, nan.partial_cmp(&default));
 //! assert!(!(nan < default) && !(nan >= default));
 //! ```
-#![cfg_attr(not(any(
-    feature = "arbitrary",
-    feature = "bitcode",
-    feature = "speedy",
-)), no_std)]
+#![cfg_attr(
+    not(any(feature = "arbitrary", feature = "bitcode", feature = "speedy",)),
+    no_std
+)]
 
 use core::cmp::Ordering;
 use core::ops::Add;
