@@ -17,11 +17,10 @@ rustflags = [
     "-Drustdoc::missing_crate_level_docs",
     "-Drustdoc::private_intra_doc_links",
 
+    "-Wclippy::arithmetic_side_effects",
     "-Wclippy::as-conversions",
     "-Wclippy::cast-possible-wrap",
-    "-Wclippy::integer_arithmetic",
 
-    "-Aclippy::arithmetic_side_effects",
     "-Aclippy::blanket-clippy-restriction-lints",
     "-Aclippy::decimal-literal-representation",
     "-Aclippy::implicit-return",
