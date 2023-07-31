@@ -57,3 +57,7 @@ rkyv = ["rkyv/alloc", "rkyv/size_32"]
 rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
 speedy = ["dep:speedy"]
+
+[dev-dependencies]
+proptest = "~1.2"
+proptest-arbitrary-interop = "~0.1"
