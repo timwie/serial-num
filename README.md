@@ -42,17 +42,14 @@ The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
 
 ## Feature Flags
 The following feature flags implement additional traits for the `Serial` type:
-* `arbitrary`: derives [arbitrary]'s `Arbitrary`
-  (⚠️ incompatible with `no_std`)
+* `arbitrary`: derives [arbitrary]'s `Arbitrary` (⚠️ requires `std`)
 * `bincode`: derives [bincode]'s `Decode/Encode`
-* `bitcode`: derives [bitcode]'s `Decode/Encode`
-  (⚠️ incompatible with `no_std`)
+* `bitcode`: derives [bitcode]'s `Decode/Encode` (⚠️ requires `std`)
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
 * `serde`: derives [serde]'s `Deserialize/Serialize`
-* `speedy`: derives [speedy]'s `Readable/Writable`
-  (⚠️ incompatible with `no_std`)
+* `speedy`: derives [speedy]'s `Readable/Writable` (⚠️ requires `std`)
 
 [arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
