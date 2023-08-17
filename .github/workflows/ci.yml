@@ -161,7 +161,8 @@ jobs:
 
   publish:
     name: Upload release to crates.io
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    # only run on new tag "v*" on main branch
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
