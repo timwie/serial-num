@@ -19,6 +19,11 @@ a day, without having to worry about overflow. The niche benefit of this type
 is that it only uses the space of a `u16`, with the problem of overflow solved
 by wraparound.
 
+One scenario where this is useful, is when signing network packets with
+a serial number, and being able to respond with an [ack](https://en.wikipedia.org/wiki/Acknowledgement_(data_networks)) packet
+that contains a larger amount of serial numbers than when using `u32` or `u64`.
+Especially with a protocol like UDP, the more numbers you can fit into that ack packet,
+the more redundancy you get, and the more likely is it that all received packets are also successfully acknowledged.
 
 ```toml
 [dependencies]
