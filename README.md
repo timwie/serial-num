@@ -25,6 +25,8 @@ that contains a larger amount of serial numbers than when using `u32` or `u64`.
 Especially with a protocol like UDP, the more numbers you can fit into that ack packet,
 the more redundancy you get, and the more likely is it that all received packets are also successfully acknowledged.
 
+<br>
+
 ```toml
 [dependencies]
 serial-num = "0.5"
@@ -34,6 +36,11 @@ serial-num = "0.5"
 serial-num = { version = "0.5", features = ["serde"] }
 ```
 
+The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
+
+<br>
+
+## Feature Flags
 The following feature flags implement additional traits for the `Serial` type:
 * `arbitrary`: derives [arbitrary]'s `Arbitrary`
   (⚠️ incompatible with `no_std`)
@@ -55,7 +62,6 @@ The following feature flags implement additional traits for the `Serial` type:
 [serde]: https://crates.io/crates/serde
 [speedy]: https://crates.io/crates/speedy
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
 
 <br>
 
@@ -148,6 +154,10 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### [0.5.1] - 2023-08-17
+* Update README
+* Update keywords & categories on `crates.io`
+
 ### [0.5.0] - 2023-07-28
 * Fix `rkyv` feature usage without `rkyv-safe`
 * Add `bitcode` feature
@@ -181,6 +191,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.3.1]: https://github.com/timwie/serial-num/releases/tag/v0.3.1
 [0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.4.0
 [0.5.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
+[0.5.1]: https://github.com/timwie/serial-num/releases/tag/v0.5.1
 
 <br>
 

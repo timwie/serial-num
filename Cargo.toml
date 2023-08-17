@@ -1,6 +1,6 @@
 [package]
 name = "serial-num"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Tim Wiechers <mail@timwie.dev>"]
 repository = "https://github.com/timwie/serial-num"
 documentation = "https://docs.rs/serial-num/"
@@ -10,7 +10,7 @@ keywords = ["serial", "number", "rfc-1982", "ack", "udp"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.66"
-exclude = [".github/"]
+exclude = [".github/", "Justfile"]
 
 [dependencies.arbitrary]
 version = "~1"
