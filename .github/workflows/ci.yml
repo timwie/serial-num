@@ -1,4 +1,8 @@
-on: push
+on: 
+  push:
+  schedule:
+    # run once a day at 12:00 UTC
+    - cron: '0 12 * * *'
 
 name: Continuous integration
 
