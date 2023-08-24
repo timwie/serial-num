@@ -24,6 +24,7 @@ rustflags = [
     "-Aclippy::blanket-clippy-restriction-lints",
     "-Aclippy::decimal-literal-representation",
     "-Aclippy::implicit-return",
+    "-Aclippy::min-ident-chars",
     "-Aclippy::missing-docs-in-private-items",
     "-Aclippy::missing-trait-methods",
 ]
