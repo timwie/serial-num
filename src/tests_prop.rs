@@ -12,7 +12,7 @@ proptest! {
     }
 
     #[test]
-    fn increase_without_overflow(serial in arb::<Serial>(), n: u16) {
+    fn increase_without_overflow(serial in arb::<Serial>()) {
         let mut a = serial;
         let mut b = serial;
         let mut c = serial;
@@ -21,9 +21,15 @@ proptest! {
         let _ = b.increase_get();
         let _ = c.get_increase();
 
-        assert!(serial < a);
-        assert!(serial < b);
-        assert!(serial < c);
+        if !serial.is_nan() {
+            assert!(serial < a);
+            assert!(serial < b);
+            assert!(serial < c);
+        } else {
+            assert!(a.is_nan());
+            assert!(b.is_nan());
+            assert!(c.is_nan());
+        }
     }
 
     #[test]
