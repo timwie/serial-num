@@ -163,7 +163,7 @@ assert!(!(nan < default) && !(nan >= default));
 ### Unreleased
 * Do not require the `rkyv/alloc` feature when enabling
   the `rkyv` feature
-* Require `rkyv ^0.7` (`>=0.7.0, <1.0`) instead of `~0`
+* Require `rkyv >=0.7,<1` instead of `~0`
   due to `RUSTSEC-2021-0054`
 * The `rkyv/alloc` feature actually did not exist prior
   to `0.7`, so this was lenient version requirement could
@@ -171,10 +171,10 @@ assert!(!(nan < default) && !(nan >= default));
   in the future, all dependencies will require to be on
   somewhat recent versions:
   * `arbitrary` changed from `~1` to `^1.1`
-  * `bitcode` changed from `~0` to `^0.4`
-  * `borsh` changed from `~0` to `^0.9`
+  * `bitcode` changed from `~0` to `>=0.4,<1`
+  * `borsh` changed from `~0` to `>=0.10,<1`
   * `serde` changed from `~1` to `^1.0.184`
-  * `speedy` changed from `~0` to `^0.8`
+  * `speedy` changed from `~0` to `>=0.8,<1`
 
 ### [0.5.1] - 2023-08-17
 * Update README

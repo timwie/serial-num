@@ -24,16 +24,16 @@ features = ["derive"]
 optional = true
 
 [dependencies.bitcode]
-version = "^0.4"
+version = ">=0.4,<1"
 optional = true
 
 [dependencies.borsh]
-version = "^0.9"
+version = ">=0.10,<1"
 default-features = false
 optional = true
 
 [dependencies.rkyv]
-version = "^0.7"
+version = ">=0.7,<1"
 default-features = false
 optional = true
 
@@ -44,7 +44,7 @@ features = ["derive"]
 optional = true
 
 [dependencies.speedy]
-version = "^0.8"
+version = ">=0.8,<1"
 optional = true
 
 [features]
