@@ -38,11 +38,11 @@ the more redundancy you get, and the more likely is it that all received packets
 
 ```toml
 [dependencies]
-serial-num = "0.5"
+serial-num = "0.6"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.5", features = ["serde"] }
+serial-num = { version = "0.6", features = ["serde"] }
 ```
 
 The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
@@ -160,7 +160,7 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### Unreleased
+### [0.6.0] - 2023-09-10
 * Do not require the `rkyv/alloc` feature when enabling
   the `rkyv` feature
 * Require `rkyv >=0.7,<1` instead of `~0`
@@ -214,6 +214,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.4.0]: https://github.com/timwie/serial-num/releases/tag/v0.4.0
 [0.5.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
 [0.5.1]: https://github.com/timwie/serial-num/releases/tag/v0.5.1
+[0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
 
 <br>
 
