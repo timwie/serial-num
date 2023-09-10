@@ -53,7 +53,7 @@ arbitrary = ["dep:arbitrary"]
 bincode = ["dep:bincode"]
 bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
-rkyv = ["rkyv/alloc", "rkyv/size_32"]
+rkyv = ["rkyv/size_32"]
 rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
 speedy = ["dep:speedy"]
@@ -61,3 +61,8 @@ speedy = ["dep:speedy"]
 [dev-dependencies]
 proptest = "~1.2"
 proptest-arbitrary-interop = "~0.1"
+
+[dev-dependencies.rkyv]
+version = "0.7.0
+default-features = false
+features = ["alloc"]
