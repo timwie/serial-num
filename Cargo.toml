@@ -13,7 +13,7 @@ rust-version = "1.66"
 exclude = [".github/", "Justfile"]
 
 [dependencies.arbitrary]
-version = "~1"
+version = "^1.1.0"
 features = ["derive"]
 optional = true
 
@@ -24,27 +24,27 @@ features = ["derive"]
 optional = true
 
 [dependencies.bitcode]
-version = "~0"
+version = "^0.4"
 optional = true
 
 [dependencies.borsh]
-version = "~0"
+version = "^0.9"
 default-features = false
 optional = true
 
 [dependencies.rkyv]
-version = "0.7.0"
+version = "^0.7"
 default-features = false
 optional = true
 
 [dependencies.serde]
-version = "~1"
+version = "^1.0.184"
 default-features = false
 features = ["derive"]
 optional = true
 
 [dependencies.speedy]
-version = "~0"
+version = "^0.8"
 optional = true
 
 [features]
@@ -63,6 +63,6 @@ proptest = "~1.2"
 proptest-arbitrary-interop = "~0.1"
 
 [dev-dependencies.rkyv]
-version = "0.7.0
+version = "^0.7"
 default-features = false
 features = ["alloc"]
