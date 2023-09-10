@@ -20,6 +20,8 @@ rustflags = [
     "-Wclippy::arithmetic_side_effects",
     "-Wclippy::as-conversions",
     "-Wclippy::cast-possible-wrap",
+    "-Wclippy::integer-division",
+    "-Wclippy::std-instead-of-core",
 
     "-Aclippy::blanket-clippy-restriction-lints",
     "-Aclippy::decimal-literal-representation",
@@ -27,4 +29,5 @@ rustflags = [
     "-Aclippy::min-ident-chars",
     "-Aclippy::missing-docs-in-private-items",
     "-Aclippy::missing-trait-methods",
+    "-Aclippy::question-mark-used",
 ]

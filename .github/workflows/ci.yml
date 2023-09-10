@@ -150,7 +150,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: cargo clippy
-        run: cargo clippy
+        run: cargo clippy --all-features
 
   verify:
     name: Model checking
