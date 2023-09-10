@@ -3,12 +3,21 @@ serial-num
   
 [![Latest Version]][crates.io]
 [![Documentation]][docs.rs]
-![License]
+![License] <br>
+[![Codecov]][codecov.io]
+[![workflow-img]][workflow]
+[![Dependency Status]][deps.rs]
 
 [Latest Version]: https://img.shields.io/crates/v/serial-num
 [crates.io]: https://crates.io/crates/serial-num
 [Documentation]: https://img.shields.io/docsrs/serial-num
 [docs.rs]: https://docs.rs/serial-num/latest/serial_num/
+[Codecov]: https://codecov.io/gh/timwie/serial-num/graph/badge.svg?token=VRESA14459
+[codecov.io]: https://codecov.io/gh/timwie/serial-num
+[workflow-img]: https://github.com/timwie/serial-num/actions/workflows/ci.yml/badge.svg
+[workflow]: https://github.com/timwie/serial-num/actions/workflows/ci.yml
+[Dependency Status]: https://deps.rs/repo/github/timwie/serial-num/status.svg
+[deps.rs]: https://deps.rs/repo/github/timwie/serial-num
 [License]: https://img.shields.io/crates/l/serial-num
 </h1>
 
