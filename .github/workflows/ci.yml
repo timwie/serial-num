@@ -47,12 +47,21 @@ jobs:
       - name: cargo build for non_std
         run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
 
-      - name: cargo test
+      - name: cargo test with no features
+        run: cargo test
+
+      - name: cargo test with all features
         run: cargo test --all-features
 
   fuzzing:
     name: Fuzz-testing crate
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - addition
+          - increment
 
     steps:
       - name: Check out repository
@@ -80,7 +89,7 @@ jobs:
         run: cargo install cargo-fuzz
 
       - name: cargo fuzz
-        run: cargo fuzz run addition --all-features -- -runs=16777216
+        run: cargo fuzz run ${{ matrix.target }} -- -runs=16777216
 
   coverage:
     name: Upload test coverage to Codecov (stable)

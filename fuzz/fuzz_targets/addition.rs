@@ -5,5 +5,6 @@ use serial_num::Serial;
 
 fuzz_target!(|tuple: (Serial, u16)| {
     let (serial, n) = tuple;
-    let _ = serial + n;
+    let successor = serial + n;
+    assert!(!serial.is_nan() || successor.is_nan());
 });

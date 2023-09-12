@@ -12,7 +12,16 @@ libfuzzer-sys = "0.4"
 
 [dependencies.serial-num]
 path = ".."
-features = ["arbitrary"]
+features = [
+    "arbitrary",
+    "bincode",
+    "bitcode",
+    "borsh",
+    "rkyv",
+    "rkyv-safe",
+    "serde",
+    "speedy",
+]
 
 # Prevent this from interfering with workspaces
 [workspace]
@@ -24,5 +33,11 @@ debug = 1
 [[bin]]
 name = "addition"
 path = "fuzz_targets/addition.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "increment"
+path = "fuzz_targets/increment.rs"
 test = false
 doc = false

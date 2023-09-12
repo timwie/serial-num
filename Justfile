@@ -12,9 +12,13 @@ check:
   cargo check --target thumbv6m-none-eabi
   cargo check --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
 
+# Run fuzz-tests
+fuzz:
+  cargo +nightly fuzz run addition -- -runs=16777216
+  cargo +nightly fuzz run increment -- -runs=16777216
+
 # Unit tests with/without features, Kani model checking, and fuzz-testing
 test:
   cargo test
   cargo test --all-features
   cargo kani --all-features
-  rustup run nightly cargo fuzz run addition --all-features -- -runs=16777216
