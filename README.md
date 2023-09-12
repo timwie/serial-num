@@ -166,7 +166,7 @@ assert!(!(nan < default) && !(nan >= default));
 * Require `rkyv >=0.7,<1` instead of `~0`
   due to `RUSTSEC-2021-0054`
 * The `rkyv/alloc` feature actually did not exist prior
-  to `0.7`, so this was lenient version requirement could
+  to `0.7`, so this lenient version requirement could
   have lead to problems before. To prevent such issues
   in the future, all dependencies will require to be on
   somewhat recent versions:
