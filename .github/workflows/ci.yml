@@ -94,6 +94,7 @@ jobs:
   coverage:
     name: Upload test coverage to Codecov (stable)
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
 
     steps:
       - name: Check out repository
