@@ -186,7 +186,7 @@ jobs:
 
   publish:
     name: Upload release to crates.io
-    needs: [test, verify, fuzzing, lint]  # do not publish if something fails
+    needs: [test, verify, fuzzing, lint, deny]  # do not publish if something fails
     # only run on new tag "v*" on main branch
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
