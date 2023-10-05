@@ -44,9 +44,7 @@ fn check_cmp() {
     let a = Serial(kani::any());
     let b = Serial(kani::any());
     let _ = a.partial_cmp(&b);
-    let _ = a.cmp(&b);
     let _ = b.partial_cmp(&a);
-    let _ = b.cmp(&a);
 }
 
 #[cfg(feature = "bincode")]

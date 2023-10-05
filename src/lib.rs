@@ -245,6 +245,22 @@ impl Serial {
             dist as i16
         }
     }
+
+    /// Compares and returns the smaller of two numbers.
+    ///
+    /// The returned number is the "predecessor" of the other.
+    #[inline]
+    pub fn min(self, other: Self) -> Self {
+        if self < other { self } else { other }
+    }
+
+    /// Compares and returns the larger of two numbers.
+    ///
+    /// The returned number is the "successor" of the other.
+    #[inline]
+    pub fn max(self, other: Self) -> Self {
+        if self > other { self } else { other }
+    }
 }
 
 impl Add<u16> for Serial {
@@ -280,40 +296,20 @@ impl PartialOrd for Serial {
         if self.is_nan() || other.is_nan() {
             return None;
         }
-        Some(self.cmp(other))
-    }
-}
+        if self.0 == other.0 {
+            return Some(Ordering::Equal);
+        }
 
-impl Ord for Serial {
-    /// Compare with wraparound.
-    ///
-    /// By convention, we say `NAN` is **less** than any other serial number.
-    ///
-    /// Based on [RFC1982].
-    ///
-    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
-    #[inline]
-    fn cmp(&self, other: &Self) -> Ordering {
-        if self.is_nan() && other.is_nan() {
-            Ordering::Equal
-        } else if self.is_nan() {
-            Ordering::Less
-        } else if other.is_nan() {
-            Ordering::Greater
-        } else if self.0 == other.0 {
-            Ordering::Equal
+        let a = i32::from(self.0);
+        let b = i32::from(other.0);
+
+        // a < b if either:
+        //  - b has the greater number and is within our window
+        //  - a has the greater number and is outside our window
+        if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
+            Some(Ordering::Less)
         } else {
-            let a = i32::from(self.0);
-            let b = i32::from(other.0);
-
-            // a < b if either:
-            //  - b has the greater number and is within our window
-            //  - a has the greater number and is outside our window
-            if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
-                Ordering::Less
-            } else {
-                Ordering::Greater
-            }
+            Some(Ordering::Greater)
         }
     }
 }

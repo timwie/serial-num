@@ -161,6 +161,8 @@ assert!(!(nan < default) && !(nan >= default));
 
 ## Changelog
 ### Unreleased
+* Remove non-canonical `Ord` implementation
+* Add `min` and `max` functions, since they are no longer provided by `Ord`
 * Up `borsh` to `^1.0.0-alpha.6`
 
 ### [0.6.0] - 2023-09-10

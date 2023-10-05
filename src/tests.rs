@@ -160,7 +160,6 @@ fn no_overflows() {
             let _ = a.dist(b);
             let _ = a.diff(b);
             let _ = a.partial_cmp(&b);
-            let _ = a.cmp(&b);
 
             let _ = a + 0;
             let _ = a + MID_U16;

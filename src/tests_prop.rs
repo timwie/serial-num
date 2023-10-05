@@ -56,13 +56,12 @@ proptest! {
 
     #[test]
     fn cmp(a in arb::<Serial>(), b in arb::<Serial>()) {
-        assert_eq!(a.cmp(&b), b.cmp(&a).reverse());
-
-        if !a.is_nan() && !b.is_nan() {
-            assert_eq!(a.partial_cmp(&b).unwrap(), b.partial_cmp(&a).unwrap().reverse());
+        match (a.partial_cmp(&b), b.partial_cmp(&a)) {
+            (Some(ord1), Some(ord2)) => assert_eq!(ord1, ord2.reverse()),
+            (None, None) => assert!(a.is_nan() || b.is_nan()),
+            _ => unreachable!()
         }
     }
-
 
     #[test]
     #[cfg(feature = "bincode")]
