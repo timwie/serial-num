@@ -67,11 +67,11 @@ fn check_bincode() {
 #[cfg(feature = "borsh")]
 #[kani::proof]
 fn check_borsh() {
-    use borsh::{BorshDeserialize, BorshSerialize};
+    use borsh::BorshDeserialize;
 
     let expected = Serial(kani::any());
 
-    let encoded = expected.try_to_vec().unwrap();
+    let encoded = borsh::to_vec(&expected).unwrap();
     assert_eq!(2, encoded.len());
 
     let actual = Serial::try_from_slice(&encoded).unwrap();
@@ -90,7 +90,7 @@ fn check_rkyv() {
 }
 
 #[cfg(feature = "rkyv-safe")]
-// TODO #[kani::proof]
+//TODO #[kani::proof]
 fn check_rkyv_safe() {
     let expected = Serial(kani::any());
 

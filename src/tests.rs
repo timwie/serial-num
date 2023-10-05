@@ -196,12 +196,12 @@ fn bincode_roundtrip() {
 #[test]
 #[cfg(feature = "borsh")]
 fn borsh_roundtrip() {
-    use borsh::{BorshDeserialize, BorshSerialize};
+    use borsh::BorshDeserialize;
 
     for n in 0..u16::MAX {
         let expected = Serial(n);
 
-        let encoded = expected.try_to_vec().unwrap();
+        let encoded = borsh::to_vec(&expected).unwrap();
         assert_eq!(2, encoded.len());
 
         let actual = Serial::try_from_slice(&encoded).unwrap();

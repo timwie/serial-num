@@ -32,8 +32,9 @@ version = ">=0.4,<1"
 optional = true
 
 [dependencies.borsh]
-version = ">=0.10,<1"
+version = "^1.0.0-alpha.6"
 default-features = false
+features = ["derive"]
 optional = true
 
 [dependencies.rkyv]
@@ -63,7 +64,7 @@ serde = ["dep:serde"]
 speedy = ["dep:speedy"]
 
 [dev-dependencies]
-proptest = "~1.2"
+proptest = "~1.3"
 proptest-arbitrary-interop = "~0.1"
 
 [dev-dependencies.rkyv]

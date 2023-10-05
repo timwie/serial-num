@@ -160,6 +160,9 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### Unreleased
+* Up `borsh` to `^1.0.0-alpha.6`
+
 ### [0.6.0] - 2023-09-10
 * Do not require the `rkyv/alloc` feature when enabling
   the `rkyv` feature

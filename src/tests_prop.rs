@@ -80,9 +80,9 @@ proptest! {
     #[test]
     #[cfg(feature = "borsh")]
     fn borsh_roundtrip(expected in arb::<Serial>()) {
-        use borsh::{BorshDeserialize, BorshSerialize};
+        use borsh::BorshDeserialize;
 
-        let encoded = expected.try_to_vec().unwrap();
+        let encoded = borsh::to_vec(&expected).unwrap();
         assert_eq!(2, encoded.len());
 
         let actual = Serial::try_from_slice(&encoded).unwrap();
