@@ -251,7 +251,11 @@ impl Serial {
     /// The returned number is the "predecessor" of the other.
     #[inline]
     pub fn min(self, other: Self) -> Self {
-        if self < other { self } else { other }
+        if self < other {
+            self
+        } else {
+            other
+        }
     }
 
     /// Compares and returns the larger of two numbers.
@@ -259,7 +263,11 @@ impl Serial {
     /// The returned number is the "successor" of the other.
     #[inline]
     pub fn max(self, other: Self) -> Self {
-        if self > other { self } else { other }
+        if self > other {
+            self
+        } else {
+            other
+        }
     }
 }
 
