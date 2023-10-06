@@ -12,6 +12,7 @@ edition = "2021"
 rust-version = "1.66"
 exclude = [
     ".*",
+    "deny.toml",
     "Justfile",
     "src/tests*.rs"
 ]
