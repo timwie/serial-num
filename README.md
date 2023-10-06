@@ -164,6 +164,7 @@ assert!(!(nan < default) && !(nan >= default));
 * Remove non-canonical `Ord` implementation
 * Add `min` and `max` functions, since they are no longer provided by `Ord`
 * Up `borsh` to `^1`
+* Relax `arbitrary` requirement from `^1.1.0` to `^1`
 
 ### [0.6.0] - 2023-09-10
 * Do not require the `rkyv/alloc` feature when enabling
