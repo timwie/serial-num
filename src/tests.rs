@@ -135,6 +135,30 @@ fn plus() {
     assert_eq!(Serial::NAN, Serial::NAN + 1);
 }
 
+#[test]
+fn min() {
+    assert_eq!(Serial(0), Serial(0).min(Serial(5)));
+    assert_eq!(Serial(0), Serial(5).min(Serial(0)));
+
+    assert_eq!(Serial(0), Serial(0).min(Serial(MID_U16)));
+    assert_eq!(Serial(0), Serial(MID_U16).min(Serial(0)));
+
+    assert_eq!(Serial(MID_U16 + 1), Serial(0).min(Serial(MID_U16 + 1)));
+    assert_eq!(Serial(MID_U16 + 1), Serial(MID_U16 + 1).min(Serial(0)));
+}
+
+#[test]
+fn max() {
+    assert_eq!(Serial(5), Serial(0).max(Serial(5)));
+    assert_eq!(Serial(5), Serial(5).max(Serial(0)));
+
+    assert_eq!(Serial(MID_U16), Serial(0).max(Serial(MID_U16)));
+    assert_eq!(Serial(MID_U16), Serial(MID_U16).max(Serial(0)));
+
+    assert_eq!(Serial(0), Serial(0).max(Serial(MID_U16 + 1)));
+    assert_eq!(Serial(0), Serial(MID_U16 + 1).max(Serial(0)));
+}
+
 /// A test with a lot of coverage, but no assertions.
 #[test]
 fn no_overflows() {

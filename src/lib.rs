@@ -125,7 +125,7 @@ use core::ops::Add;
 /// will get messed up if there is an item that is the `32767`th successor of another item.
 ///
 /// The final value in our number space, `u16::MAX`, is reserved for the special
-/// `NAN` value. This is done to save space - you don't need to wrap
+/// [`NAN`](Self::NAN) value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
 #[must_use]
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
@@ -156,8 +156,7 @@ const MID_U16: u16 = 32_767;
 impl Serial {
     /// Special value representing "no serial number".
     ///
-    /// By convention, we say this "serial number" is **less** than any other.
-    /// It cannot be increased, or added to.
+    /// By convention, this "number" cannot be increased, or added to.
     pub const NAN: Self = Self(NAN_U16);
 
     /// Returns `true` if this number is [`NAN`](Self::NAN).
@@ -199,8 +198,8 @@ impl Serial {
     ///
     /// For the signed difference, use [`Self::diff()`].
     ///
-    /// If one of the number is `NAN`, the maximum distance of `32767` is returned.
-    /// If both are `NAN`, we say the distance is `0`.
+    /// If one of the number is [`NAN`](Self::NAN), the maximum distance of `32767` is returned.
+    /// If both are [`NAN`](Self::NAN), we say the distance is `0`.
     #[inline]
     #[must_use]
     pub fn dist(self, other: Self) -> u16 {
@@ -233,8 +232,8 @@ impl Serial {
     ///
     /// For the unsigned distance, use [`Self::dist()`].
     ///
-    /// If one of the number is `NAN`, the maximum difference of `(-)32767` is returned.
-    /// If both are `NAN`, we say the difference is `0`.
+    /// If one of the number is [`NAN`](Self::NAN), the maximum difference of `(-)32767`
+    /// is returned. If both are [`NAN`](Self::NAN), we say the difference is `0`.
     #[inline]
     #[must_use]
     pub fn diff(self, other: Self) -> i16 {
@@ -249,24 +248,30 @@ impl Serial {
     /// Compares and returns the smaller of two numbers.
     ///
     /// The returned number is the "predecessor" of the other.
+    ///
+    /// If one number is [`NAN`](Self::NAN), then the other is returned.
     #[inline]
     pub fn min(self, other: Self) -> Self {
-        if self < other {
-            self
-        } else {
-            other
+        match self.partial_cmp(&other) {
+            Some(Ordering::Less) => self,
+            Some(_) => other,
+            None if self.is_nan() => other,
+            None => self,
         }
     }
 
     /// Compares and returns the larger of two numbers.
     ///
     /// The returned number is the "successor" of the other.
+    ///
+    /// If one number is [`NAN`](Self::NAN), then the other is returned.
     #[inline]
     pub fn max(self, other: Self) -> Self {
-        if self > other {
-            self
-        } else {
-            other
+        match self.partial_cmp(&other) {
+            Some(Ordering::Greater) => self,
+            Some(_) => other,
+            None if self.is_nan() => other,
+            None => self,
         }
     }
 }
@@ -280,7 +285,7 @@ impl Add<u16> for Serial {
     /// semantics, adding more than `(u16::MAX-1)/2 = 32767` leads to a result that is
     /// _less_ than `self`. Adding `u16::MAX` will wraparound to the same value.
     ///
-    /// If `self.is_nan()`, the returned serial number is also `NAN`.
+    /// If `self.is_nan()`, then the returned serial number is also [`NAN`](Self::NAN).
     #[inline]
     fn add(self, rhs: u16) -> Self::Output {
         if self.is_nan() {
@@ -294,7 +299,7 @@ impl Add<u16> for Serial {
 impl PartialOrd for Serial {
     /// Partial comparison with wraparound.
     ///
-    /// Returns `None` if one of the values is `NAN`.
+    /// Returns `None` if one of the values is [`NAN`](Self::NAN).
     ///
     /// Based on [RFC1982].
     ///
