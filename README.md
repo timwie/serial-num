@@ -1,26 +1,3 @@
-<h1 align="center">
-serial-num
-  
-[![Latest Version]][crates.io]
-[![Documentation]][docs.rs]
-![License] <br>
-[![Codecov]][codecov.io]
-[![workflow-img]][workflow]
-[![Dependency Status]][deps.rs]
-
-[Latest Version]: https://img.shields.io/crates/v/serial-num
-[crates.io]: https://crates.io/crates/serial-num
-[Documentation]: https://img.shields.io/docsrs/serial-num
-[docs.rs]: https://docs.rs/serial-num/latest/serial_num/
-[Codecov]: https://codecov.io/gh/timwie/serial-num/graph/badge.svg?token=VRESA14459
-[codecov.io]: https://codecov.io/gh/timwie/serial-num
-[workflow-img]: https://github.com/timwie/serial-num/actions/workflows/ci.yml/badge.svg
-[workflow]: https://github.com/timwie/serial-num/actions/workflows/ci.yml
-[Dependency Status]: https://deps.rs/repo/github/timwie/serial-num/status.svg
-[deps.rs]: https://deps.rs/repo/github/timwie/serial-num
-[License]: https://img.shields.io/crates/l/serial-num
-</h1>
-
 This crate offers a two-byte serial number with wraparound.
 A serial number is an identifier assigned incrementally to an item.
 In many cases, you can use a `u32` or `u64` and call it
@@ -38,11 +15,11 @@ the more redundancy you get, and the more likely is it that all received packets
 
 ```toml
 [dependencies]
-serial-num = "0.6"
+serial-num = "0.7"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.6", features = ["serde"] }
+serial-num = { version = "0.7", features = ["serde"] }
 ```
 
 The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
@@ -160,7 +137,7 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-### Unreleased
+### [0.7.0] - 2023-10-06
 * Remove non-canonical `Ord` implementation
 * Add `min` and `max` functions, since they are no longer provided by `Ord`
 * Up `borsh` to `^1`
@@ -221,6 +198,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.5.0]: https://github.com/timwie/serial-num/releases/tag/v0.5.0
 [0.5.1]: https://github.com/timwie/serial-num/releases/tag/v0.5.1
 [0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
+[0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
 
 <br>
 
