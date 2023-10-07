@@ -12,6 +12,11 @@ check:
   cargo check --target thumbv6m-none-eabi
   cargo check --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
 
+# Remove target directories
+clean:
+  cargo clean --manifest-path fuzz/Cargo.toml
+  cargo clean
+
 # Run fuzz-tests
 fuzz:
   cargo +nightly fuzz run addition -- -runs=16777216
