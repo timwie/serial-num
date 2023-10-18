@@ -162,6 +162,7 @@ use core::ops::Add;
 /// [`NAN`](Self::NAN) value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
 #[must_use]
+#[repr(transparent)]
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[cfg_attr(feature = "bincode", derive(bincode::Decode, bincode::Encode))]
@@ -170,6 +171,7 @@ use core::ops::Add;
     feature = "borsh",
     derive(borsh::BorshDeserialize, borsh::BorshSerialize)
 )]
+#[cfg_attr(feature = "bytemuck", derive(bytemuck::Pod, bytemuck::Zeroable))]
 #[cfg_attr(
     feature = "rkyv",
     derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize),

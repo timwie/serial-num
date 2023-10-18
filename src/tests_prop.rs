@@ -89,6 +89,14 @@ proptest! {
     }
 
     #[test]
+    #[cfg(feature = "bytemuck")]
+    fn bytemuck_cast_roundtrip(original in arb::<Serial>()) {
+        let casted: u16 = bytemuck::cast(original);
+        let casted_back: Serial = bytemuck::cast(casted);
+        assert_eq!(original, casted_back);
+    }
+
+    #[test]
     #[cfg(feature = "rkyv")]
     fn rkyv_roundtrip(expected in arb::<Serial>()) {
         let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();

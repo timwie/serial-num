@@ -233,6 +233,40 @@ fn borsh_roundtrip() {
 }
 
 #[test]
+#[cfg(feature = "bytemuck")]
+fn bytemuck_cast_roundtrip() {
+    let original = Serial(42);
+    let casted: u16 = bytemuck::cast(original);
+    let casted_back: Serial = bytemuck::cast(casted);
+    assert_eq!(original, casted_back);
+}
+
+#[test]
+#[cfg(feature = "bytemuck")]
+fn bytemuck_cast_and_zeroed() {
+    let serial = Serial(42);
+    let actual_bytes = bytemuck::bytes_of(&serial);
+    let expected_bytes = 42_u16.to_le_bytes();
+    assert_eq!(&expected_bytes, actual_bytes);
+
+    assert_eq!(&serial, bytemuck::from_bytes::<Serial>(&actual_bytes));
+
+    let actual_u16: u16 = bytemuck::cast(serial);
+    let expected_u16 = 42_u16;
+    assert_eq!(expected_u16, actual_u16);
+
+    let mut actual_zeroed = Serial(42);
+    bytemuck::write_zeroes(&mut actual_zeroed);
+    let expected_zeroed = Serial(0);
+    assert_eq!(expected_zeroed, actual_zeroed);
+
+    let mut actual_zeroed = [Serial(0), Serial(1), Serial(2)];
+    bytemuck::fill_zeroes(&mut actual_zeroed);
+    let expected_zeroed = [Serial(0), Serial(0), Serial(0)];
+    assert_eq!(expected_zeroed, actual_zeroed);
+}
+
+#[test]
 #[cfg(feature = "rkyv")]
 fn rkyv_roundtrip() {
     for n in 0..u16::MAX {

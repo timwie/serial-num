@@ -33,6 +33,7 @@ The following feature flags implement additional traits for the `Serial` type:
 * `bincode`: derives [bincode]'s `Decode/Encode`
 * `bitcode`: derives [bitcode]'s `Decode/Encode` (⚠️ requires `std`)
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
+* `bytemuck`: derives [bytemuck]'s `Pod/Zeroable`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
 * `serde`: derives [serde]'s `Deserialize/Serialize`
@@ -42,6 +43,7 @@ The following feature flags implement additional traits for the `Serial` type:
 [bincode]: https://crates.io/crates/bincode
 [bitcode]: https://crates.io/crates/bitcode
 [borsh]: https://crates.io/crates/borsh
+[bytemuck]: https://crates.io/crates/bytemuck
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde
 [speedy]: https://crates.io/crates/speedy
@@ -138,6 +140,10 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+## Unreleased
+* Add `bytemuck` feature
+* Make `Serial` `#[repr(transparent)]`
+
 ### [0.7.0] - 2023-10-06
 * Remove non-canonical `Ord` implementation
 * Add `min` and `max` functions, since they are no longer provided by `Ord`

@@ -76,6 +76,15 @@ fn check_borsh() {
     assert_eq!(expected, actual);
 }
 
+#[cfg(feature = "bytemuck")]
+#[kani::proof]
+fn bytemuck_cast_roundtrip() {
+    let original = Serial(kani::any());
+    let casted: u16 = bytemuck::cast(original);
+    let casted_back: Serial = bytemuck::cast(casted);
+    assert_eq!(original, casted_back);
+}
+
 #[cfg(feature = "rkyv")]
 // TODO #[kani::proof]
 fn check_rkyv() {

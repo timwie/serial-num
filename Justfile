@@ -10,7 +10,7 @@ check:
   cargo check
   cargo check --all-features
   cargo check --target thumbv6m-none-eabi
-  cargo check --target thumbv6m-none-eabi --features bincode,borsh,rkyv,rkyv-safe,serde
+  cargo check --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,rkyv,rkyv-safe,serde
 
 # Remove target directories
 clean:

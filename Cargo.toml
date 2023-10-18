@@ -38,6 +38,11 @@ default-features = false
 features = ["derive"]
 optional = true
 
+[dependencies.bytemuck]
+version = "^1.13"
+features = ["derive"]
+optional = true
+
 [dependencies.rkyv]
 version = ">=0.7,<1"
 default-features = false
@@ -59,6 +64,7 @@ arbitrary = ["dep:arbitrary"]
 bincode = ["dep:bincode"]
 bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
+bytemuck = ["dep:bytemuck"]
 rkyv = ["rkyv/size_32"]
 rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
