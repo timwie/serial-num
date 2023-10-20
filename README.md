@@ -16,11 +16,11 @@ the more redundancy you get, and the more likely is it that all received packets
 
 ```toml
 [dependencies]
-serial-num = "0.7"
+serial-num = "0.8"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.7", features = ["serde"] }
+serial-num = { version = "0.8", features = ["serde"] }
 ```
 
 The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
@@ -140,9 +140,9 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
-## Unreleased
-* Add `bytemuck` feature
+### [0.8.0] - 2023-10-20
 * Make `Serial` `#[repr(transparent)]`
+* Add `bytemuck` feature
 
 ### [0.7.0] - 2023-10-06
 * Remove non-canonical `Ord` implementation
@@ -206,6 +206,7 @@ assert!(!(nan < default) && !(nan >= default));
 [0.5.1]: https://github.com/timwie/serial-num/releases/tag/v0.5.1
 [0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
 [0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
+[0.8.0]: https://github.com/timwie/serial-num/releases/tag/v0.8.0
 
 <br>
 
