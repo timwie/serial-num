@@ -23,7 +23,7 @@ serial-num = "0.8"
 serial-num = { version = "0.8", features = ["serde"] }
 ```
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.66.0`.
+The Minimum Supported Rust Version (MSRV) for this crate is `1.67.0`.
 
 <br>
 
@@ -140,6 +140,9 @@ assert!(!(nan < default) && !(nan >= default));
 <br>
 
 ## Changelog
+### Unreleased
+* Increase MSRV to `1.67.0`
+
 ### [0.8.0] - 2023-10-20
 * Make `Serial` `#[repr(transparent)]`
 * Add `bytemuck` feature
