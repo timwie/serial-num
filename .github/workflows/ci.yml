@@ -45,7 +45,7 @@ jobs:
         run: cargo build --all-features
 
       - name: cargo build for non_std
-        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,rkyv,rkyv-safe,serde
+        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
 
       - name: cargo test with no features
         run: cargo test

@@ -97,6 +97,17 @@ proptest! {
     }
 
     #[test]
+    #[cfg(feature = "postcard")]
+    fn postcard_roundtrip(expected in arb::<Serial>()) {
+        let mut buf = [0_u8; 3];
+
+        let bytes = postcard::to_slice(&expected, &mut buf).unwrap();
+
+        let actual: Serial = postcard::from_bytes(&bytes).unwrap();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
     #[cfg(feature = "rkyv")]
     fn rkyv_roundtrip(expected in arb::<Serial>()) {
         let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();

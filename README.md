@@ -34,6 +34,7 @@ The following feature flags implement additional traits for the `Serial` type:
 * `bitcode`: derives [bitcode]'s `Decode/Encode` (⚠️ requires `std`)
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `bytemuck`: derives [bytemuck]'s `Pod/Zeroable`
+* `postcard`: derives [postcard]'s `Schema/MaxSize`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
 * `serde`: derives [serde]'s `Deserialize/Serialize`
@@ -44,6 +45,7 @@ The following feature flags implement additional traits for the `Serial` type:
 [bitcode]: https://crates.io/crates/bitcode
 [borsh]: https://crates.io/crates/borsh
 [bytemuck]: https://crates.io/crates/bytemuck
+[postcard]: https://crates.io/crates/postcard
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde
 [speedy]: https://crates.io/crates/speedy
@@ -142,6 +144,7 @@ assert!(!(nan < default) && !(nan >= default));
 ## Changelog
 ### Unreleased
 * Increase MSRV to `1.67.0`
+* Add `postcard` feature
 
 ### [0.8.0] - 2023-10-20
 * Make `Serial` `#[repr(transparent)]`
@@ -210,20 +213,3 @@ assert!(!(nan < default) && !(nan >= default));
 [0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
 [0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
 [0.8.0]: https://github.com/timwie/serial-num/releases/tag/v0.8.0
-
-<br>
-
-## License
-
-<sup>
-Licensed under either of <a href="LICENSE-APACHE">Apache License, Version
-2.0</a> or <a href="LICENSE-MIT">MIT license</a> at your option.
-</sup>
-
-<br>
-
-<sub>
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
-be dual licensed as above, without any additional terms or conditions.
-</sub>

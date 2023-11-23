@@ -173,6 +173,13 @@ use core::ops::Add;
 )]
 #[cfg_attr(feature = "bytemuck", derive(bytemuck::Pod, bytemuck::Zeroable))]
 #[cfg_attr(
+    feature = "postcard",
+    derive(
+        postcard::experimental::max_size::MaxSize,
+        postcard::experimental::schema::Schema
+    )
+)]
+#[cfg_attr(
     feature = "rkyv",
     derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize),
     archive(compare(PartialEq)),

@@ -267,6 +267,29 @@ fn bytemuck_cast_and_zeroed() {
 }
 
 #[test]
+#[cfg(feature = "postcard")]
+fn postcard_maxsize() {
+    use postcard::experimental::max_size::MaxSize;
+    assert_eq!(3, Serial::POSTCARD_MAX_SIZE);
+    assert_eq!(3, u16::POSTCARD_MAX_SIZE); // sanity check
+}
+
+#[test]
+#[cfg(feature = "postcard")]
+fn postcard_roundtrip() {
+    for n in 0..u16::MAX {
+        let expected = Serial(n);
+
+        let mut buf = [0_u8; 3];
+
+        let bytes = postcard::to_slice(&expected, &mut buf).unwrap();
+
+        let actual: Serial = postcard::from_bytes(&bytes).unwrap();
+        assert_eq!(actual, expected);
+    }
+}
+
+#[test]
 #[cfg(feature = "rkyv")]
 fn rkyv_roundtrip() {
     for n in 0..u16::MAX {

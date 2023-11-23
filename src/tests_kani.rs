@@ -132,3 +132,15 @@ fn check_bitcode() {
     let actual: Serial = bitcode::decode(&encoded).unwrap();
     assert_eq!(expected, actual);
 }
+
+#[cfg(feature = "postcard")]
+#[kani::proof]
+fn check_postcard() {
+    let expected = Serial(kani::any());
+    let mut buf = [0_u8; 3];
+
+    let encoded = postcard::to_slice(&expected, &mut buf).unwrap();
+
+    let actual: Serial = postcard::from_bytes(encoded).unwrap();
+    assert_eq!(expected, actual);
+}
