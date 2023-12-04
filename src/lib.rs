@@ -126,7 +126,7 @@
 #[cfg(test)]
 mod tests;
 
-#[cfg(all(test, feature = "arbitrary"))]
+#[cfg(all(test, not(miri), feature = "arbitrary"))]
 mod tests_prop;
 
 #[cfg(kani)]

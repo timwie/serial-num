@@ -27,7 +27,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
-          components: rustfmt, clippy
+          components: rustfmt, clippy, miri
           targets: thumbv6m-none-eabi
 
       - name: Use cache
@@ -53,6 +53,9 @@ jobs:
       - name: cargo test with all features
         run: cargo test --all-features
 
+      - name: cargo miri test with all features
+        run: cargo +nightly miri test --all-features
+
   fuzzing:
     name: Fuzz-testing crate
     runs-on: ubuntu-latest
@@ -71,7 +74,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly
-          components: rustfmt, clippy
+          components: rustfmt, clippy, miri
           targets: thumbv6m-none-eabi
 
       - name: Use cache
@@ -104,7 +107,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt, clippy
+          components: rustfmt, clippy, miri
           targets: thumbv6m-none-eabi
 
       - name: Use cache
@@ -143,7 +146,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt, clippy
+          components: rustfmt, clippy, miri
           targets: thumbv6m-none-eabi
 
       - name: Use cache

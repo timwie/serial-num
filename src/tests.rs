@@ -1,5 +1,18 @@
 use super::*;
 
+const CANDIDATES: [u16; 10] = [
+    0,
+    1,
+    2,
+    MID_U16 - 1,
+    MID_U16,
+    MID_U16 + 1,
+    MAX_U16 - 2,
+    MAX_U16 - 1,
+    MAX_U16,
+    NAN_U16,
+];
+
 #[test]
 fn increase_nan() {
     let mut nan = Serial::NAN;
@@ -109,7 +122,7 @@ fn diff() {
     let a = Serial::default();
     let mut b = Serial::default();
 
-    for _ in 0..MAX_U16 {
+    for _ in 0..5 {
         b.increase();
         let diff_pos = a.diff(b);
         let diff_neg = b.diff(a);
@@ -162,21 +175,8 @@ fn max() {
 /// A test with a lot of coverage, but no assertions.
 #[test]
 fn no_overflows() {
-    let candidates = [
-        0,
-        1,
-        2,
-        MID_U16 - 1,
-        MID_U16,
-        MID_U16 + 1,
-        MAX_U16 - 2,
-        MAX_U16 - 1,
-        MAX_U16,
-        NAN_U16,
-    ];
-
-    for n in candidates {
-        for m in candidates {
+    for n in CANDIDATES {
+        for m in CANDIDATES {
             let a = Serial(n);
             let b = Serial(m);
 
@@ -190,7 +190,7 @@ fn no_overflows() {
             let _ = a + u16::MAX;
 
             let mut c = Serial(n);
-            for _ in 0..u16::MAX {
+            for _ in 0..5 {
                 c.increase();
                 let _ = c.increase_get();
                 let _ = c.get_increase();
@@ -204,7 +204,7 @@ fn no_overflows() {
 fn bincode_roundtrip() {
     let cfg = bincode::config::standard().with_fixed_int_encoding();
 
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let mut buf = [0_u8; 2];
@@ -221,7 +221,7 @@ fn bincode_roundtrip() {
 fn borsh_roundtrip() {
     use borsh::BorshDeserialize;
 
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let encoded = borsh::to_vec(&expected).unwrap();
@@ -277,7 +277,7 @@ fn postcard_maxsize() {
 #[test]
 #[cfg(feature = "postcard")]
 fn postcard_roundtrip() {
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let mut buf = [0_u8; 3];
@@ -292,7 +292,7 @@ fn postcard_roundtrip() {
 #[test]
 #[cfg(feature = "rkyv")]
 fn rkyv_roundtrip() {
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
@@ -305,7 +305,7 @@ fn rkyv_roundtrip() {
 #[test]
 #[cfg(feature = "rkyv-safe")]
 fn rkyv_safe_roundtrip() {
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
@@ -332,7 +332,7 @@ fn arbitrary() {
 fn speedy_roundtrip() {
     use speedy::{Readable, Writable};
 
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let encoded = expected.write_to_vec().unwrap();
@@ -346,7 +346,7 @@ fn speedy_roundtrip() {
 #[test]
 #[cfg(feature = "bitcode")]
 fn bitcode_roundtrip() {
-    for n in 0..u16::MAX {
+    for n in CANDIDATES {
         let expected = Serial(n);
 
         let encoded = bitcode::encode(&expected).unwrap();
