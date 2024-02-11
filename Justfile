@@ -32,3 +32,8 @@ test:
   cargo test
   cargo test --all-features
   cargo kani --all-features
+
+# Update dependencies and lock files
+update:
+  cargo update
+  cargo update --manifest-path=fuzz/Cargo.toml
