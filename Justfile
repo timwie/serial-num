@@ -11,6 +11,7 @@ check:
   cargo check --all-features
   cargo check --target thumbv6m-none-eabi
   cargo check --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+  cargo +nightly check --all-features
 
 # Remove target directories
 clean:
