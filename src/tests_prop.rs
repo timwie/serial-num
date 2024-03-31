@@ -140,7 +140,7 @@ proptest! {
     #[test]
     #[cfg(feature = "bitcode")]
     fn bitcode_roundtrip(expected in arb::<Serial>()) {
-        let encoded = bitcode::encode(&expected).unwrap();
+        let encoded = bitcode::encode(&expected);
         assert_eq!(2, encoded.len());
 
         let actual: Serial = bitcode::decode(&encoded).unwrap();
