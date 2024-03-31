@@ -23,8 +23,6 @@ serial-num = "0.8"
 serial-num = { version = "0.8", features = ["serde"] }
 ```
 
-The Minimum Supported Rust Version (MSRV) for this crate is `1.67.0`.
-
 <br>
 
 ## Feature Flags
