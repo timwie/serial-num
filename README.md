@@ -143,7 +143,7 @@ assert!(!(nan < default) && !(nan >= default));
 
 ## Changelog
 ### Unreleased
-* Increase MSRV to `1.69.0`
+* Increase MSRV to `1.70.0`
 * Add `postcard` feature
 
 ### [0.8.0] - 2023-10-20
