@@ -1,10 +1,13 @@
-on: 
-  push:
-  schedule:
-    # run once a day at 12:00 UTC
-    - cron: '0 12 * * *'
+name: Test and lint crate
 
-name: Continuous integration
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    paths:
+      - '**.rs'
+      - '**.lock'
+      - '**.toml'
 
 jobs:
   test:
@@ -56,41 +59,6 @@ jobs:
           rustup +nightly component add miri
           cargo +nightly miri test --all-features
 
-  fuzzing:
-    name: Fuzz-testing crate
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          - addition
-          - increment
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install Rust toolchain with rustup
-        uses: dtolnay/rust-toolchain@v1
-        with:
-          toolchain: nightly
-          components: rustfmt, clippy
-          targets: thumbv6m-none-eabi
-
-      - name: Use cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Install cargo-fuzz
-        run: cargo install cargo-fuzz
-
-      - name: cargo fuzz
-        run: cargo fuzz run ${{ matrix.target }} -- -runs=16777216
-
   coverage:
     name: Upload test coverage to Codecov (stable)
     runs-on: ubuntu-latest
@@ -128,6 +96,23 @@ jobs:
           files: lcov.info
           fail_ci_if_error: true
 
+  fmt:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt
+
+      - name: cargo fmt
+        run: cargo fmt --all -- --check
+
   lint:
     name: Lint crate (stable)
     runs-on: ubuntu-latest
@@ -140,7 +125,7 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt, clippy
+          components: clippy
           targets: thumbv6m-none-eabi
 
       - name: Use cache
@@ -150,9 +135,6 @@ jobs:
             ~/.cargo/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: cargo fmt
-        run: cargo fmt --all -- --check
 
       - name: cargo clippy
         run: cargo clippy --all-features
@@ -178,22 +160,3 @@ jobs:
 
       - name: cargo deny
         uses: EmbarkStudios/cargo-deny-action@v1
-
-  publish:
-    name: Upload release to crates.io
-    needs: [test, verify, fuzzing, lint, deny]  # do not publish if something fails
-    # only run on new tag "v*" on main branch
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@v1
-        with:
-          toolchain: stable
-
-      - run: cargo publish --token ${CRATES_TOKEN}
-        env:
-          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}

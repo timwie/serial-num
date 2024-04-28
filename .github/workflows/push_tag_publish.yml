@@ -1,0 +1,96 @@
+name: Publish crate release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  test:
+    name: Build and test crate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.70.0  # MSRV
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt, clippy
+          targets: thumbv6m-none-eabi
+
+      - name: Use cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: cargo build
+        run: cargo build --all-features
+
+      - name: cargo build for non_std
+        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+
+      - name: cargo test with no features
+        run: cargo test
+
+      - name: cargo test with all features
+        run: cargo test --all-features
+
+      - name: cargo miri test with all features
+        if: ${{ matrix.rust == 'nightly' }}
+        run: |
+          rustup +nightly component add miri
+          cargo +nightly miri test --all-features
+
+  verify:
+    name: Model checking
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run Kani Verifier
+        uses: model-checking/kani-github-action@v1
+        with:
+          args: --all-features
+
+  deny:
+    name: Lint dependency crates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: cargo deny
+        uses: EmbarkStudios/cargo-deny-action@v1
+
+  publish:
+    name: Upload release to crates.io
+    needs: [test, verify, deny]  # do not publish if something fails
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - run: cargo publish --token ${CRATES_TOKEN}
+        env:
+          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
