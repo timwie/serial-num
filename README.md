@@ -146,7 +146,7 @@ assert!(!nan.precedes(default) && !nan.succeeds(default));
 
 ## Changelog
 ### Unreleased
-* Remove non-canonical `PartialOrd` implementation (#1)
+* Remove non-canonical `PartialOrd` implementation ([#1])
 * Make `partial_cmp()` an inherent method of `SerialNum`
 * Add `precedes()`, `precedes_or_eq()`, `succeeds()`, and `succeeds_or_eq()` methods
   to replace now missing `<`, `<=`, `>`, and `>=` operators
@@ -220,3 +220,5 @@ assert!(!nan.precedes(default) && !nan.succeeds(default));
 [0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
 [0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
 [0.8.0]: https://github.com/timwie/serial-num/releases/tag/v0.8.0
+
+[#1]: https://github.com/timwie/serial-num/issues/1
