@@ -31,7 +31,7 @@ msrv:
 test:
   cargo test
   cargo test --all-features
-  cargo kani --all-features
+  cargo kani --tests --all-features
 
 # Update dependencies and lock files
 update:

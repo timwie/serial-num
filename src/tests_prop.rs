@@ -64,6 +64,14 @@ proptest! {
     }
 
     #[test]
+    #[cfg(feature = "serde")]
+    fn serde_json_roundtrip(expected in arb::<Serial>()) {
+        let encoded = serde_json::to_string(&expected).unwrap();
+        let actual: Serial = serde_json::from_str(&encoded).unwrap();
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
     #[cfg(feature = "bincode")]
     fn bincode_roundtrip(expected in arb::<Serial>()) {
         let cfg = bincode::config::standard().with_fixed_int_encoding();

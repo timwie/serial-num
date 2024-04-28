@@ -47,6 +47,16 @@ fn check_cmp() {
     let _ = b.partial_cmp(&a);
 }
 
+#[cfg(feature = "serde")]
+// TODO: kani proof has infinite loop
+// #[kani::proof]
+fn check_serde_json() {
+    let expected = Serial(kani::any());
+    let encoded = serde_json::to_string(&expected).unwrap();
+    let actual: Serial = serde_json::from_str(&encoded).unwrap();
+    assert_eq!(expected, actual);
+}
+
 #[cfg(feature = "bincode")]
 #[kani::proof]
 fn check_bincode() {
