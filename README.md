@@ -12,6 +12,11 @@ that contains a larger amount of serial numbers than when using `u32` or `u64`.
 Especially with a protocol like UDP, the more numbers you can fit into that ack packet,
 the more redundancy you get, and the more likely is it that all received packets are also successfully acknowledged.
 
+Due to the limited number space, recently allocated serial numbers may
+duplicate very old serial numbers, but not other recently allocated serial numbers.
+To avoid ambiguity with these non-unique numbers, [RFC 1982 "Serial Number Arithmetic"](https://datatracker.ietf.org/doc/html/rfc1982),
+defines special rules for calculations involving these kinds of serial numbers. 
+
 <br>
 
 ```toml
