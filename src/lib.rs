@@ -14,7 +14,7 @@
 //! let y = b.get_increase(); // copy, then increase
 //! c.increase();
 //!
-//! assert!(y < x);
+//! assert!(y.precedes(x));
 //! assert_eq!(-1_i16, y.diff(x)); // "diff()" is signed
 //! assert_eq!(1_u16, y.dist(x)); // "dist()" is unsigned
 //!
@@ -37,12 +37,12 @@
 //! // a distance of less than half of our number space (32767).
 //! let a = Serial::default() + 5;
 //! let b = Serial::default() + 32000;
-//! assert!(a < b); // 5th successor < 32000th successor
+//! assert!(a.precedes(b)); // 5th successor < 32000th successor
 //!
 //! // but: the comparison flips if the distance is larger
 //! let a = Serial::default() + 5;
 //! let b = Serial::default() + 65000;
-//! assert!(a > b); // 5th successor > 65000th successor
+//! assert!(a.succeeds(b)); // 5th successor > 65000th successor
 //!
 //! // this means that you get the right ordering as long as
 //! // you compare one serial number at most with one that
@@ -81,8 +81,8 @@
 //! assert_eq!(32_767_i16, nan.diff(default));
 //!
 //! // partial ordering does not include the NAN value
-//! assert_eq!(None, nan.partial_cmp(&default));
-//! assert!(!(nan < default) && !(nan >= default));
+//! assert_eq!(None, nan.partial_cmp(default));
+//! assert!(!nan.precedes(default) && !nan.succeeds(default));
 //! ```
 #![deny(
     clippy::all,
@@ -281,7 +281,7 @@ impl Serial {
     #[must_use]
     pub fn diff(self, other: Self) -> i16 {
         let dist = self.dist(other);
-        if let Some(Ordering::Less) = self.partial_cmp(&other) {
+        if self.precedes(other) {
             -(dist as i16)
         } else {
             dist as i16
@@ -295,7 +295,7 @@ impl Serial {
     /// If one number is [`NAN`](Self::NAN), then the other is returned.
     #[inline]
     pub fn min(self, other: Self) -> Self {
-        match self.partial_cmp(&other) {
+        match self.partial_cmp(other) {
             Some(Ordering::Less) => self,
             Some(_) => other,
             None if self.is_nan() => other,
@@ -310,11 +310,83 @@ impl Serial {
     /// If one number is [`NAN`](Self::NAN), then the other is returned.
     #[inline]
     pub fn max(self, other: Self) -> Self {
-        match self.partial_cmp(&other) {
+        match self.partial_cmp(other) {
             Some(Ordering::Greater) => self,
             Some(_) => other,
             None if self.is_nan() => other,
             None => self,
+        }
+    }
+
+    /// Partial comparison with wraparound.
+    ///
+    /// Returns `None` if one of the values is [`NAN`](Self::NAN).
+    ///
+    /// Based on [RFC1982].
+    ///
+    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
+    #[inline]
+    #[must_use]
+    pub fn partial_cmp(self, other: Self) -> Option<Ordering> {
+        if self.is_nan() || other.is_nan() {
+            return None;
+        }
+        if self.0 == other.0 {
+            return Some(Ordering::Equal);
+        }
+
+        let a = i32::from(self.0);
+        let b = i32::from(other.0);
+
+        // a < b if either:
+        //  - b has the greater number and is within our window
+        //  - a has the greater number and is outside our window
+        if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
+            Some(Ordering::Less)
+        } else {
+            Some(Ordering::Greater)
+        }
+    }
+
+    /// `True` if `self < other` according to [RFC1982].
+    ///
+    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
+    #[inline]
+    #[must_use]
+    pub fn precedes(self, other: Self) -> bool {
+        self.partial_cmp(other) == Some(Ordering::Less)
+    }
+
+    /// `True` if `self <= other` according to [RFC1982].
+    ///
+    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
+    #[inline]
+    #[must_use]
+    pub fn precedes_or_eq(self, other: Self) -> bool {
+        match self.partial_cmp(other) {
+            Some(Ordering::Less | Ordering::Equal) => true,
+            Some(Ordering::Greater) | None => false,
+        }
+    }
+
+    /// `True` if `self > other` according to [RFC1982].
+    ///
+    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
+    #[inline]
+    #[must_use]
+    pub fn succeeds(self, other: Self) -> bool {
+        self.partial_cmp(other) == Some(Ordering::Greater)
+    }
+
+    /// `True` if `self >= other` according to [RFC1982].
+    ///
+    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
+    #[inline]
+    #[must_use]
+    pub fn succeeds_or_eq(self, other: Self) -> bool {
+        match self.partial_cmp(other) {
+            Some(Ordering::Greater | Ordering::Equal) => true,
+            Some(Ordering::Less) | None => false,
         }
     }
 }
@@ -336,36 +408,5 @@ impl Add<u16> for Serial {
         }
         let n = (u32::from(self.0) + u32::from(rhs)) % (NAN_U32);
         Self(n as u16)
-    }
-}
-
-impl PartialOrd for Serial {
-    /// Partial comparison with wraparound.
-    ///
-    /// Returns `None` if one of the values is [`NAN`](Self::NAN).
-    ///
-    /// Based on [RFC1982].
-    ///
-    /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
-    #[inline]
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        if self.is_nan() || other.is_nan() {
-            return None;
-        }
-        if self.0 == other.0 {
-            return Some(Ordering::Equal);
-        }
-
-        let a = i32::from(self.0);
-        let b = i32::from(other.0);
-
-        // a < b if either:
-        //  - b has the greater number and is within our window
-        //  - a has the greater number and is outside our window
-        if (b > a && b - a <= MID_I32) || (a > b && a - b > MID_I32) {
-            Some(Ordering::Less)
-        } else {
-            Some(Ordering::Greater)
-        }
     }
 }

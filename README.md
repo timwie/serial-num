@@ -71,7 +71,7 @@ let x = a.increase_get(); // increase, then copy
 let y = b.get_increase(); // copy, then increase
 c.increase();
 
-assert!(y < x);
+assert!(y.preceeds(x));
 assert_eq!(-1_i16, y.diff(x)); // "diff()" is signed
 assert_eq!(1_u16, y.dist(x)); // "dist()" is unsigned
 
@@ -94,12 +94,12 @@ let x = x + u16::MAX + u16::MAX + u16::MAX;
 // a distance of less than half of our number space (32767).
 let a = Serial::default() + 5;
 let b = Serial::default() + 32000;
-assert!(a < b); // 5th successor < 32000th successor
+assert!(a.precedes(b)); // 5th successor < 32000th successor
 
 // but: the comparison flips if the distance is larger
 let a = Serial::default() + 5;
 let b = Serial::default() + 65000;
-assert!(a > b); // 5th successor > 65000th successor
+assert!(a.succeeds(b)); // 5th successor > 65000th successor
 
 // this means that you get the right ordering as long as
 // you compare one serial number at most with one that
@@ -138,16 +138,20 @@ assert_eq!(32_767_i16, default.diff(nan));
 assert_eq!(32_767_i16, nan.diff(default));
 
 // partial ordering does not include the NAN value
-assert_eq!(None, nan.partial_cmp(&default));
-assert!(!(nan < default) && !(nan >= default));
+assert_eq!(None, nan.partial_cmp(default));
+assert!(!nan.precedes(default) && !nan.succeeds(default));
 ```
 
 <br>
 
 ## Changelog
 ### Unreleased
-* Increase MSRV to `1.70.0`
+* Remove non-canonical `PartialOrd` implementation (#1)
+* Make `partial_cmp()` an inherent method of `SerialNum`
+* Add `precedes()`, `precedes_or_eq()`, `succeeds()`, and `succeeds_or_eq()` methods
+  to replace now missing `<`, `<=`, `>`, and `>=` operators
 * Add `postcard` feature
+* Increase MSRV to `1.70.0`
 
 ### [0.8.0] - 2023-10-20
 * Make `Serial` `#[repr(transparent)]`

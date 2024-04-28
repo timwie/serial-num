@@ -22,9 +22,9 @@ proptest! {
         let _ = c.get_increase();
 
         if !serial.is_nan() {
-            assert!(serial < a);
-            assert!(serial < b);
-            assert!(serial < c);
+            assert!(serial.precedes(a));
+            assert!(serial.precedes(b));
+            assert!(serial.precedes(c));
         } else {
             assert!(a.is_nan());
             assert!(b.is_nan());
@@ -56,7 +56,7 @@ proptest! {
 
     #[test]
     fn cmp(a in arb::<Serial>(), b in arb::<Serial>()) {
-        match (a.partial_cmp(&b), b.partial_cmp(&a)) {
+        match (a.partial_cmp(b), b.partial_cmp(a)) {
             (Some(ord1), Some(ord2)) => assert_eq!(ord1, ord2.reverse()),
             (None, None) => assert!(a.is_nan() || b.is_nan()),
             _ => unreachable!()

@@ -43,8 +43,8 @@ fn check_add() {
 fn check_cmp() {
     let a = Serial(kani::any());
     let b = Serial(kani::any());
-    let _ = a.partial_cmp(&b);
-    let _ = b.partial_cmp(&a);
+    let _ = a.partial_cmp(b);
+    let _ = b.partial_cmp(a);
 }
 
 #[cfg(feature = "serde")]

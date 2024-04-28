@@ -24,16 +24,16 @@ fn increase_nan() {
 fn cmp1() {
     let a = Serial::default();
     let b = Serial(MAX_U16);
-    assert!(a > b);
-    assert!(b < a);
+    assert!(a.succeeds(b));
+    assert!(b.precedes(a));
 }
 
 #[test]
 fn cmp2() {
     let a = Serial(1000);
     let b = Serial(u16::MAX - 1000);
-    assert!(a > b);
-    assert!(b < a);
+    assert!(a.succeeds(b));
+    assert!(b.precedes(a));
 }
 
 #[test]
@@ -41,8 +41,8 @@ fn cmp_edge_case() {
     let zero = Serial::default();
     let mid = Serial(32767);
 
-    assert!(mid > zero);
-    assert!(zero < mid);
+    assert!(mid.succeeds(zero));
+    assert!(zero.precedes(mid));
 }
 
 #[test]
@@ -68,7 +68,7 @@ fn dist2() {
 fn dist3() {
     let zero = Serial::default();
     let mid = Serial(32767);
-    assert!(zero < mid);
+    assert!(zero.precedes(mid));
 
     let actual1 = zero.dist(mid);
     let actual2 = mid.dist(zero);
@@ -77,7 +77,7 @@ fn dist3() {
 
     // if we increase by one, the order flips around, and the distance stays the same
     let mid_plus_one = Serial(32768);
-    assert!(zero > mid_plus_one);
+    assert!(zero.succeeds(mid_plus_one));
 
     let actual1 = zero.dist(mid_plus_one);
     let actual2 = mid_plus_one.dist(zero);
@@ -90,8 +90,8 @@ fn simple_example() {
     let a = Serial(5_u16);
     let b = Serial(7_u16);
 
-    assert!(a < b);
-    assert!(b > a);
+    assert!(a.precedes(b));
+    assert!(b.succeeds(a));
 
     let diff = b.dist(a);
     assert_eq!(diff, 2);
@@ -102,8 +102,8 @@ fn wraparound_example() {
     // serial number 5 comes after sequence number 65000
     let a = Serial(5_u16);
     let mut b = Serial(65000_u16);
-    assert!(a > b);
-    assert!(b < a);
+    assert!(a.succeeds(b));
+    assert!(b.precedes(a));
 
     let dist = b.dist(a);
     let expected_diff = MAX_U16 - 65000 + 5 + 1;
@@ -142,8 +142,8 @@ fn plus() {
 
     assert_eq!(Serial(5 + MID_U16), Serial(5) + MID_U16);
 
-    assert!(Serial(0) < Serial(0) + MID_U16);
-    assert!(Serial(0) > Serial(1) + MID_U16);
+    assert!(Serial(0).precedes(Serial(0) + MID_U16));
+    assert!(Serial(0).succeeds(Serial(1) + MID_U16));
 
     assert_eq!(Serial::NAN, Serial::NAN + 1);
 }
@@ -183,7 +183,7 @@ fn no_overflows() {
             let _ = a.is_nan();
             let _ = a.dist(b);
             let _ = a.diff(b);
-            let _ = a.partial_cmp(&b);
+            let _ = a.partial_cmp(b);
 
             let _ = a + 0;
             let _ = a + MID_U16;
