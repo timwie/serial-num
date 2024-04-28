@@ -19,9 +19,9 @@ fuzz_target!(|serial: Serial| {
     assert!(!serial.is_nan() || b.is_nan());
     assert!(!serial.is_nan() || c.is_nan());
 
-    assert!(serial.is_nan() || serial < a);
-    assert!(serial.is_nan() || serial < b);
-    assert!(serial.is_nan() || serial < c);
+    assert!(serial.is_nan() || serial.precedes(a));
+    assert!(serial.is_nan() || serial.precedes(b));
+    assert!(serial.is_nan() || serial.precedes(c));
 
     assert!(serial.is_nan() || a.dist(serial) == 1);
     assert!(serial.is_nan() || b.dist(serial) == 1);
