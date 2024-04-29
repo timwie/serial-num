@@ -23,11 +23,7 @@ fuzz:
   cargo +nightly fuzz run addition -- -runs=16777216
   cargo +nightly fuzz run increment -- -runs=16777216
 
-# Try to find the MSRV
-msrv:
-  cargo msrv -- cargo check --all-features
-
-# Unit tests with/without features, Kani model checking, and fuzz-testing
+# Unit tests with/without features, and Kani model checking
 test:
   cargo test
   cargo test --all-features

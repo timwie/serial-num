@@ -119,7 +119,7 @@ use serial_num::Serial;
 // "NAN" exists to have value representing "no serial number",
 // since it saves encoding space vs wrapping Serial in an Option.
 let nan = Serial::NAN;
-let default = Serial::default();
+let num = Serial::default();
 
 // you can check whether a serial number is NAN
 assert!(nan.is_nan());
@@ -132,14 +132,14 @@ assert_eq!(0_u16, nan.dist(nan));
 assert_eq!(0_i16, nan.diff(nan));
 
 // distance and difference of non-NAN to NAN is the maximum distance
-assert_eq!(32_767_u16, default.dist(nan));
-assert_eq!(32_767_u16, nan.dist(default));
-assert_eq!(32_767_i16, default.diff(nan));
-assert_eq!(32_767_i16, nan.diff(default));
+assert_eq!(32_767_u16, num.dist(nan));
+assert_eq!(32_767_u16, nan.dist(num));
+assert_eq!(32_767_i16, num.diff(nan));
+assert_eq!(32_767_i16, nan.diff(num));
 
 // partial ordering does not include the NAN value
-assert_eq!(None, nan.partial_cmp(default));
-assert!(!nan.precedes(default) && !nan.succeeds(default));
+assert_eq!(None, nan.partial_cmp(num));
+assert!(!nan.precedes(num) && !nan.succeeds(num));
 ```
 
 <br>
