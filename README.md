@@ -148,7 +148,7 @@ assert!(!nan.precedes(num) && !nan.succeeds(num));
 ### Unreleased
 * **Breaking**: Increase MSRV to `1.70.0` (minimum version to run the test suite)
 * **Breaking**: Remove non-canonical `PartialOrd` implementation ([#1])
-* Make `partial_cmp()` an inherent method of `SerialNum`
+* Make `partial_cmp()` an inherent method of `Serial`
 * Add `precedes()`, `precedes_or_eq()`, `succeeds()`, and `succeeds_or_eq()` methods
   to replace now missing `<`, `<=`, `>`, and `>=` operators
 * Add `postcard` feature
