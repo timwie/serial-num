@@ -53,7 +53,6 @@ The following feature flags implement additional traits for the `Serial` type:
 [serde]: https://crates.io/crates/serde
 [speedy]: https://crates.io/crates/speedy
 
-
 <br>
 
 ## Usage
@@ -71,7 +70,7 @@ let x = a.increase_get(); // increase, then copy
 let y = b.get_increase(); // copy, then increase
 c.increase();
 
-assert!(y.preceeds(x));
+assert!(y.precedes(x));
 assert_eq!(-1_i16, y.diff(x)); // "diff()" is signed
 assert_eq!(1_u16, y.dist(x)); // "dist()" is unsigned
 

@@ -1,89 +1,5 @@
-//! Serial number type with wraparound.
-//!
-//! # Simple example
-//! ```
-//! use serial_num::Serial;
-//!
-//! // the default is a reference point - not serial number "zero"
-//! let mut a = Serial::default();
-//! let mut b = Serial::default();
-//! let mut c = Serial::default();
-//!
-//! // three ways to increase
-//! let x = a.increase_get(); // increase, then copy
-//! let y = b.get_increase(); // copy, then increase
-//! c.increase();
-//!
-//! assert!(y.precedes(x));
-//! assert_eq!(-1_i16, y.diff(x)); // "diff()" is signed
-//! assert_eq!(1_u16, y.dist(x)); // "dist()" is unsigned
-//!
-//! // addition is the same as calling "increase()" n times
-//! assert_eq!(y + 1_u16, x);
-//! ```
-//!
-//! # Wraparound example
-//! ```
-//! use serial_num::Serial;
-//!
-//! // a serial number can be increased indefinitely
-//! let mut x = Serial::default();
-//! for _ in 0..u16::MAX {
-//!     x.increase();
-//! }
-//! let x = x + u16::MAX + u16::MAX + u16::MAX;
-//!
-//! // comparison is trivial as long as two serial numbers have
-//! // a distance of less than half of our number space (32767).
-//! let a = Serial::default() + 5;
-//! let b = Serial::default() + 32000;
-//! assert!(a.precedes(b)); // 5th successor < 32000th successor
-//!
-//! // but: the comparison flips if the distance is larger
-//! let a = Serial::default() + 5;
-//! let b = Serial::default() + 65000;
-//! assert!(a.succeeds(b)); // 5th successor > 65000th successor
-//!
-//! // this means that you get the right ordering as long as
-//! // you compare one serial number at most with one that
-//! // is its 32767th successor.
-//!
-//! // a real use case of this is to sign UDP packets with
-//! // a serial number. this would allow you to restore the
-//! // order of packets at the receiver as long as you never
-//! // look at more than the 32767 last packets (which
-//! // should be much more than you need).
-//! ```
-//!
-//! # The `NAN` value
-//! ```
-//! use serial_num::Serial;
-//!
-//! // "NAN" exists to have value representing "no serial number",
-//! // since it saves encoding space vs wrapping Serial in an Option.
-//! let nan = Serial::NAN;
-//! let num = Serial::default();
-//!
-//! // you can check whether a serial number is NAN
-//! assert!(nan.is_nan());
-//!
-//! // NAN cannot be increased
-//! assert_eq!(Serial::NAN, nan + 1_u16);
-//!
-//! // distance between two NAN values is zero
-//! assert_eq!(0_u16, nan.dist(nan));
-//! assert_eq!(0_i16, nan.diff(nan));
-//!
-//! // distance and difference of non-NAN to NAN is the maximum distance
-//! assert_eq!(32_767_u16, num.dist(nan));
-//! assert_eq!(32_767_u16, nan.dist(num));
-//! assert_eq!(32_767_i16, num.diff(nan));
-//! assert_eq!(32_767_i16, nan.diff(num));
-//!
-//! // partial ordering does not include the NAN value
-//! assert_eq!(None, nan.partial_cmp(num));
-//! assert!(!nan.precedes(num) && !nan.succeeds(num));
-//! ```
+#![doc = include_str!("crate.md")]
+#![doc = include_str!("examples.md")]
 #![deny(
     clippy::all,
     clippy::restriction,
@@ -119,7 +35,7 @@
     clippy::question_mark_used
 )]
 #![cfg_attr(
-    not(any(feature = "arbitrary", feature = "bitcode", feature = "speedy",)),
+    not(any(test, feature = "arbitrary", feature = "bitcode", feature = "speedy",)),
     no_std
 )]
 
@@ -131,6 +47,9 @@ mod tests_prop;
 
 #[cfg(kani)]
 mod tests_kani;
+
+#[cfg(test)]
+mod tests_readme;
 
 use core::cmp::Ordering;
 use core::ops::Add;
@@ -149,7 +68,7 @@ use core::ops::Add;
 /// is that there is no "maximum" serial number, since every
 /// serial number has a successor.
 ///
-/// The window used for comparing two serial numbers is half of our number space,
+/// The window used for comparing two serial numbers is half of the number space,
 /// `(u16::MAX-1)/2 = 32767`. If two serial numbers are within that window, we simply compare
 /// the numbers as you normally would. If we compare numbers that do not fit into
 /// that window, like `5` and `65000`, the comparison is flipped, and we say `65000 < 5`.
@@ -158,9 +77,10 @@ use core::ops::Add;
 /// assign serial numbers to have a short enough lifetime. The ordering of items in your state
 /// will get messed up if there is an item that is the `32767`th successor of another item.
 ///
-/// The final value in our number space, `u16::MAX`, is reserved for the special
+/// The final value in the number space, `u16::MAX`, is reserved for the special
 /// [`NAN`](Self::NAN) value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
+#[doc = include_str!("examples.md")]
 #[must_use]
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]

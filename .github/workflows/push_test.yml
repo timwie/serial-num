@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - '.github/workflows/push_test.yml'
+      - 'src/**.md'
       - '**.rs'
       - '**.lock'
       - '**.toml'
