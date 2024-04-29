@@ -44,13 +44,13 @@ assert!(a.succeeds(b)); // 5th successor > 65000th successor
 
 // this means that you get the right ordering as long as
 // you compare one serial number at most with one that
-// is its 32767th successor.
-
-// a real use case of this is to sign UDP packets with
-// a serial number. this would allow you to restore the
-// order of packets at the receiver as long as you never
-// look at more than the 32767 last packets (which
-// should be much more than you need).
+// is its 32767th successor:
+let num = Serial::default();
+assert!(num.precedes(num + 32767));     //  0 < 32767 (still intuitive)
+assert!(num.succeeds(num + 32768));     //  0 > 32768 (flip #1)
+assert!(num.succeeds(num + 65534));     //  0 > 65534
+assert!(num == num + 65535);            // 0 == 65535 (due to same internal representation)
+assert!(num.precedes(num + 65535 + 1)); //  0 < 65536 (flip #2)
 ```
 
 ### The `NAN` value

@@ -18,6 +18,10 @@ clean:
   cargo clean --manifest-path fuzz/Cargo.toml
   cargo clean
 
+doc:
+  rm -rf target/doc/
+  cargo doc --open
+
 # Run fuzz-tests
 fuzz:
   cargo +nightly fuzz run addition -- -runs=16777216
