@@ -48,7 +48,7 @@ mod tests_prop;
 #[cfg(kani)]
 mod tests_kani;
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests_readme;
 
 use core::cmp::Ordering;
