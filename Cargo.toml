@@ -10,6 +10,9 @@ keywords = ["serial", "number", "rfc-1982", "ack", "udp"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.70"
+include = [
+    "RELEASES.md",
+]
 exclude = [
     ".*",
     "deny.toml",

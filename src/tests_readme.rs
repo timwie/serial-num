@@ -13,7 +13,7 @@ fn readme_starts_with_crate_md() {
 }
 
 #[test]
-fn readme_contains_examples_md() {
+fn readme_ends_with_examples_md() {
     let root_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let examples_path = root_path.join("src/examples.md");
     let readme_path = root_path.join("README.md");
@@ -21,5 +21,5 @@ fn readme_contains_examples_md() {
     let examples_md = std::fs::read_to_string(examples_path).unwrap();
     let readme_md = std::fs::read_to_string(readme_path).unwrap();
 
-    assert!(readme_md.contains(&examples_md));
+    assert!(readme_md.ends_with(&examples_md));
 }

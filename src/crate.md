@@ -1,5 +1,7 @@
 This crate offers a two-byte serial number with wraparound.
 
+[Release notes](https://github.com/timwie/serial-num/blob/main/RELEASES.md)
+
 A serial number is an identifier assigned incrementally to an item.
 In many cases, you can use a `u32` or `u64` and call it
 a day, without having to worry about overflow. The niche benefit of this type
