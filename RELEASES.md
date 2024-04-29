@@ -1,5 +1,5 @@
 ## Release Notes
-### Unreleased
+### [0.9.0] - 2024-04-29
 * **Breaking**: Increase MSRV to `1.70.0` (minimum version to run the test suite)
 * **Breaking**: Remove non-canonical `PartialOrd` implementation ([#1])
 * Make `partial_cmp()` an inherent method of `Serial`
@@ -72,5 +72,6 @@
 [0.6.0]: https://github.com/timwie/serial-num/releases/tag/v0.6.0
 [0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
 [0.8.0]: https://github.com/timwie/serial-num/releases/tag/v0.8.0
+[0.9.0]: https://github.com/timwie/serial-num/releases/tag/v0.9.0
 
 [#1]: https://github.com/timwie/serial-num/issues/1

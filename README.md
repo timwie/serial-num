@@ -23,11 +23,11 @@ defines special rules for calculations involving these kinds of serial numbers.
 
 ```toml
 [dependencies]
-serial-num = "0.8"
+serial-num = "0.9"
 
 # or with additional features:
 [dependencies]
-serial-num = { version = "0.8", features = ["serde"] }
+serial-num = { version = "0.9", features = ["serde"] }
 ```
 
 <br>
