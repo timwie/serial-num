@@ -11,13 +11,10 @@ license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.70"
 include = [
+    "src/*.md",
+    "src/lib.rs",
     "RELEASES.md",
-]
-exclude = [
-    ".*",
-    "deny.toml",
-    "Justfile",
-    "src/tests*.rs"
+    "LICENSE-*",
 ]
 
 [dependencies.arbitrary]
