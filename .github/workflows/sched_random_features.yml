@@ -40,7 +40,8 @@ jobs:
       - name: cargo build/test (std)
         run: |
           FEATURES=('arbitrary' 'bincode' 'bitcode' 'borsh' 'bytemuck' 'postcard' 'rkyv' 'rkyv-safe' 'serde' 'speedy')
-          SELECTED=$(shuf -e ${FEATURES[@]} -n $((RANDOM % ${#FEATURES[@]})) | paste -sd, -)
+          NUM_SELECTED=$(shuf -i 2-${#FEATURES[@]} -n 1)
+          SELECTED=$(shuf -e ${FEATURES[@]} -n $NUM_SELECTED | paste -sd, -)
           echo "Randomly selected '$SELECTED'"
           cargo build --features $SELECTED
           cargo test --features $SELECTED
@@ -48,6 +49,7 @@ jobs:
       - name: cargo build (no_std)
         run: |
           FEATURES=('bincode' 'borsh' 'bytemuck' 'postcard' 'rkyv' 'rkyv-safe' 'serde')
-          SELECTED=$(shuf -e ${FEATURES[@]} -n $((RANDOM % ${#FEATURES[@]})) | paste -sd, -)
+          NUM_SELECTED=$(shuf -i 2-${#FEATURES[@]} -n 1)
+          SELECTED=$(shuf -e ${FEATURES[@]} -n $NUM_SELECTED | paste -sd, -)
           echo "Randomly selected '$SELECTED'"
           cargo build --target thumbv6m-none-eabi --features $SELECTED
