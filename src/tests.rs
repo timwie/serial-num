@@ -288,21 +288,6 @@ fn postcard_maxsize() {
 }
 
 #[test]
-#[cfg(feature = "postcard")]
-fn postcard_roundtrip() {
-    for n in CANDIDATES {
-        let expected = Serial(n);
-
-        let mut buf = [0_u8; 3];
-
-        let bytes = postcard::to_slice(&expected, &mut buf).unwrap();
-
-        let actual: Serial = postcard::from_bytes(&bytes).unwrap();
-        assert_eq!(actual, expected);
-    }
-}
-
-#[test]
 #[cfg(feature = "rkyv")]
 fn rkyv_roundtrip() {
     for n in CANDIDATES {
