@@ -1,4 +1,9 @@
 ## Release Notes
+### Unreleased
+* Add `or()` function to `Serial`
+* Add `or_default()` function to `Serial`
+* Add `take()` function to `Serial`
+
 ### [0.9.0] - 2024-04-29
 * **Breaking**: Increase MSRV to `1.70.0` (minimum version to run the test suite)
 * **Breaking**: Remove non-canonical `PartialOrd` implementation ([#1])

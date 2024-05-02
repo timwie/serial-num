@@ -200,6 +200,32 @@ fn no_overflows() {
 }
 
 #[test]
+fn or() {
+    assert_eq!(Serial::NAN.or(Serial(5)), Serial(5));
+    assert_eq!(Serial(1).or(Serial::NAN), Serial(1));
+    assert_eq!(Serial(1).or(Serial(5)), Serial(1));
+}
+
+#[test]
+fn or_default() {
+    assert_eq!(Serial::NAN.or_default(), Serial::default());
+    assert_eq!(Serial(1).or_default(), Serial(1));
+    assert_eq!(Serial(5).or_default(), Serial(5));
+}
+
+#[test]
+fn take() {
+    let mut a = Serial(1);
+    let mut b = Serial(2);
+
+    assert_eq!(a.take(), Serial(1));
+    assert_eq!(a, Serial::NAN);
+
+    assert_eq!(b.take(), Serial(2));
+    assert_eq!(b, Serial::NAN);
+}
+
+#[test]
 #[cfg(feature = "serde")]
 fn serde_json_roundtrip() {
     for n in CANDIDATES {

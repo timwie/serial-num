@@ -77,10 +77,6 @@ rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
 serde = ["dep:serde"]
 speedy = ["dep:speedy"]
 
-# FEATURES_STD=('arbitrary' 'bincode' 'bitcode' 'borsh' 'bytemuck' 'postcard' 'rkyv' 'rkyv-safe' 'serde' 'speedy'); shuf -e ${FEATURES_STD[@]} -n $((RANDOM % 10))
-
-# FEATURES_STD=('arbitrary' 'bincode' 'bitcode' 'borsh' 'bytemuck' 'postcard' 'rkyv' 'rkyv-safe' 'serde' 'speedy'); shuf -e ${FEATURES_STD[@]} -n $((RANDOM % ${#FEATURES_STD[@]}))
-
 [dev-dependencies]
 postcard = { version = "^1", default-features = true }
 proptest = "~1.4"

@@ -23,9 +23,9 @@
     clippy::as_conversions,
     clippy::cast_possible_wrap,
     clippy::integer_division,
-    clippy::std_instead_of_core
 )]
 #![allow(
+    clippy::absolute_paths,
     clippy::blanket_clippy_restriction_lints,
     clippy::decimal_literal_representation,
     clippy::implicit_return,
@@ -308,6 +308,32 @@ impl Serial {
             Some(Ordering::Greater | Ordering::Equal) => true,
             Some(Ordering::Less) | None => false,
         }
+    }
+
+    /// Returns `self` if it's not `NAN`, otherwise returns `other`.
+    #[inline]
+    pub fn or(self, other: Self) -> Self {
+        if self.is_nan() {
+            other
+        } else {
+            self
+        }
+    }
+
+    /// Returns `self` if it's not `NAN`, otherwise returns `Serial::default()`.
+    #[inline]
+    pub fn or_default(self) -> Self {
+        if self.is_nan() {
+            Self::default()
+        } else {
+            self
+        }
+    }
+
+    /// Replaces `self` with `NAN`, returning the previous value.
+    #[inline]
+    pub fn take(&mut self) -> Self {
+        core::mem::replace(self, Self::NAN)
     }
 }
 
