@@ -1,39 +1,5 @@
 #![doc = include_str!("crate.md")]
 #![doc = include_str!("examples.md")]
-#![deny(
-    clippy::all,
-    clippy::restriction,
-    clippy::pedantic,
-    clippy::suspicious,
-    clippy::wildcard_dependencies,
-    elided_lifetimes_in_paths,
-    legacy_derive_helpers,
-    unknown_lints,
-    unused_imports,
-    unused_mut,
-    rustdoc::bare_urls,
-    rustdoc::broken_intra_doc_links,
-    rustdoc::invalid_codeblock_attributes,
-    rustdoc::invalid_rust_codeblocks,
-    rustdoc::missing_crate_level_docs,
-    rustdoc::private_intra_doc_links
-)]
-#![warn(
-    clippy::arithmetic_side_effects,
-    clippy::as_conversions,
-    clippy::cast_possible_wrap,
-    clippy::integer_division,
-)]
-#![allow(
-    clippy::absolute_paths,
-    clippy::blanket_clippy_restriction_lints,
-    clippy::decimal_literal_representation,
-    clippy::implicit_return,
-    clippy::min_ident_chars,
-    clippy::missing_docs_in_private_items,
-    clippy::missing_trait_methods,
-    clippy::question_mark_used
-)]
 #![cfg_attr(
     not(any(test, feature = "arbitrary", feature = "bitcode", feature = "speedy",)),
     no_std
