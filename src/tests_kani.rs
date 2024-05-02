@@ -98,6 +98,7 @@ fn bytemuck_cast_roundtrip() {
 // TODO: kani proof fails
 // #[kani::proof]
 #[cfg(feature = "rkyv")]
+#[allow(unsafe_code)]
 fn check_rkyv() {
     let expected = Serial(kani::any());
 

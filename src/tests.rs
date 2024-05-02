@@ -315,6 +315,7 @@ fn postcard_maxsize() {
 
 #[test]
 #[cfg(feature = "rkyv")]
+#[allow(unsafe_code)]
 fn rkyv_roundtrip() {
     for n in CANDIDATES {
         let expected = Serial(n);
