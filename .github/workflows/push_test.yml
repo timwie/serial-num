@@ -15,6 +15,7 @@ jobs:
   test:
     name: Build and test crate
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +24,6 @@ jobs:
           - beta
           - nightly
           - 1.70.0  # MSRV
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -64,8 +64,8 @@ jobs:
   coverage:
     name: Upload test coverage to Codecov (stable)
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     if: ${{ github.event_name == 'push' }}
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -101,7 +101,7 @@ jobs:
   fmt:
     name: Check code formatting
     runs-on: ubuntu-latest
-
+    timeout-minutes: 1
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -118,7 +118,7 @@ jobs:
   lint:
     name: Lint crate (stable)
     runs-on: ubuntu-latest
-
+    timeout-minutes: 3
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -143,7 +143,8 @@ jobs:
 
   verify:
     name: Model checking
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -156,6 +157,7 @@ jobs:
   deny:
     name: Lint dependency crates
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
