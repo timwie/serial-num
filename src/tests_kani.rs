@@ -47,6 +47,36 @@ fn check_cmp() {
     let _ = b.partial_cmp(a);
 }
 
+#[kani::proof]
+fn check_or() {
+    let num = Serial(kani::any());
+    assert_eq!(num.or(Serial::NAN), num);
+    if num.is_nan() {
+        assert_eq!(num.or(Serial(5)), Serial(5));
+    } else {
+        assert_eq!(num.or(Serial(5)), num);
+    }
+}
+
+#[kani::proof]
+fn check_or_default() {
+    let num = Serial(kani::any());
+    if num.is_nan() {
+        assert_eq!(num.or_default(), Serial::default());
+    } else {
+        assert_eq!(num.or_default(), num);
+    }
+}
+
+#[kani::proof]
+fn check_take() {
+    let mut num = Serial(kani::any());
+    let num_copy = num;
+
+    assert_eq!(num.take(), num_copy);
+    assert_eq!(num, Serial::NAN);
+}
+
 #[cfg(feature = "serde")]
 // TODO: kani proof has infinite loop
 // #[kani::proof]
