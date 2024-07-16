@@ -21,11 +21,25 @@ fn increase_nan() {
 }
 
 #[test]
+fn cmp_eq() {
+    let a = Serial::default();
+    let b = Serial::default();
+    assert!(a.succeeds_or_eq(b));
+    assert!(b.succeeds_or_eq(a));;
+    assert!(a.precedes_or_eq(b));
+    assert!(b.precedes_or_eq(a));
+    assert_eq!(a.dist(b), 0);
+    assert_eq!(a.diff(b), 0);
+}
+
+#[test]
 fn cmp1() {
     let a = Serial::default();
     let b = Serial(MAX_U16);
     assert!(a.succeeds(b));
+    assert!(a.succeeds_or_eq(b));
     assert!(b.precedes(a));
+    assert!(b.precedes_or_eq(a));
 }
 
 #[test]
@@ -33,7 +47,9 @@ fn cmp2() {
     let a = Serial(1000);
     let b = Serial(u16::MAX - 1000);
     assert!(a.succeeds(b));
+    assert!(a.succeeds_or_eq(b));
     assert!(b.precedes(a));
+    assert!(b.precedes_or_eq(a));
 }
 
 #[test]
@@ -42,7 +58,9 @@ fn cmp_edge_case() {
     let mid = Serial(32767);
 
     assert!(mid.succeeds(zero));
+    assert!(mid.succeeds_or_eq(zero));
     assert!(zero.precedes(mid));
+    assert!(zero.precedes_or_eq(mid));
 }
 
 #[test]
@@ -78,6 +96,7 @@ fn dist3() {
     // if we increase by one, the order flips around, and the distance stays the same
     let mid_plus_one = Serial(32768);
     assert!(zero.succeeds(mid_plus_one));
+    assert!(zero.succeeds_or_eq(mid_plus_one));
 
     let actual1 = zero.dist(mid_plus_one);
     let actual2 = mid_plus_one.dist(zero);
@@ -91,7 +110,9 @@ fn simple_example() {
     let b = Serial(7_u16);
 
     assert!(a.precedes(b));
+    assert!(a.precedes_or_eq(b));
     assert!(b.succeeds(a));
+    assert!(b.succeeds_or_eq(a));
 
     let diff = b.dist(a);
     assert_eq!(diff, 2);
@@ -103,7 +124,9 @@ fn wraparound_example() {
     let a = Serial(5_u16);
     let mut b = Serial(65000_u16);
     assert!(a.succeeds(b));
+    assert!(a.succeeds_or_eq(b));
     assert!(b.precedes(a));
+    assert!(b.precedes_or_eq(a));
 
     let dist = b.dist(a);
     let expected_diff = MAX_U16 - 65000 + 5 + 1;
@@ -158,6 +181,9 @@ fn min() {
 
     assert_eq!(Serial(MID_U16 + 1), Serial(0).min(Serial(MID_U16 + 1)));
     assert_eq!(Serial(MID_U16 + 1), Serial(MID_U16 + 1).min(Serial(0)));
+
+    assert_eq!(Serial(0), Serial(0).min(Serial::NAN));
+    assert_eq!(Serial(0), Serial::NAN.min(Serial(0)));
 }
 
 #[test]
@@ -170,6 +196,9 @@ fn max() {
 
     assert_eq!(Serial(0), Serial(0).max(Serial(MID_U16 + 1)));
     assert_eq!(Serial(0), Serial(MID_U16 + 1).max(Serial(0)));
+
+    assert_eq!(Serial(0), Serial(0).max(Serial::NAN));
+    assert_eq!(Serial(0), Serial::NAN.max(Serial(0)));
 }
 
 /// A test with a lot of coverage, but no assertions.
