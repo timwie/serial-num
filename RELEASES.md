@@ -1,5 +1,5 @@
 ## Release Notes
-### Unreleased
+### [0.10.0] - 2024-07-17
 * Add `or()` function to `Serial`
 * Add `or_default()` function to `Serial`
 * Add `take()` function to `Serial`
@@ -78,5 +78,6 @@
 [0.7.0]: https://github.com/timwie/serial-num/releases/tag/v0.7.0
 [0.8.0]: https://github.com/timwie/serial-num/releases/tag/v0.8.0
 [0.9.0]: https://github.com/timwie/serial-num/releases/tag/v0.9.0
+[0.10.0]: https://github.com/timwie/serial-num/releases/tag/v0.10.0
 
 [#1]: https://github.com/timwie/serial-num/issues/1
