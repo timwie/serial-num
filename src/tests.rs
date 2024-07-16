@@ -25,7 +25,7 @@ fn cmp_eq() {
     let a = Serial::default();
     let b = Serial::default();
     assert!(a.succeeds_or_eq(b));
-    assert!(b.succeeds_or_eq(a));;
+    assert!(b.succeeds_or_eq(a));
     assert!(a.precedes_or_eq(b));
     assert!(b.precedes_or_eq(a));
     assert_eq!(a.dist(b), 0);
@@ -38,8 +38,10 @@ fn cmp1() {
     let b = Serial(MAX_U16);
     assert!(a.succeeds(b));
     assert!(a.succeeds_or_eq(b));
+    assert!(!a.precedes_or_eq(b));
     assert!(b.precedes(a));
     assert!(b.precedes_or_eq(a));
+    assert!(!b.succeeds_or_eq(a));
 }
 
 #[test]
@@ -48,8 +50,10 @@ fn cmp2() {
     let b = Serial(u16::MAX - 1000);
     assert!(a.succeeds(b));
     assert!(a.succeeds_or_eq(b));
+    assert!(!a.precedes_or_eq(b));
     assert!(b.precedes(a));
     assert!(b.precedes_or_eq(a));
+    assert!(!b.succeeds_or_eq(a));
 }
 
 #[test]
@@ -59,8 +63,10 @@ fn cmp_edge_case() {
 
     assert!(mid.succeeds(zero));
     assert!(mid.succeeds_or_eq(zero));
+    assert!(!mid.precedes_or_eq(zero));
     assert!(zero.precedes(mid));
     assert!(zero.precedes_or_eq(mid));
+    assert!(!zero.succeeds_or_eq(mid));
 }
 
 #[test]
@@ -97,6 +103,7 @@ fn dist3() {
     let mid_plus_one = Serial(32768);
     assert!(zero.succeeds(mid_plus_one));
     assert!(zero.succeeds_or_eq(mid_plus_one));
+    assert!(!zero.precedes_or_eq(mid_plus_one));
 
     let actual1 = zero.dist(mid_plus_one);
     let actual2 = mid_plus_one.dist(zero);
@@ -111,8 +118,10 @@ fn simple_example() {
 
     assert!(a.precedes(b));
     assert!(a.precedes_or_eq(b));
+    assert!(!a.succeeds_or_eq(b));
     assert!(b.succeeds(a));
     assert!(b.succeeds_or_eq(a));
+    assert!(!b.precedes(a));
 
     let diff = b.dist(a);
     assert_eq!(diff, 2);
@@ -125,8 +134,10 @@ fn wraparound_example() {
     let mut b = Serial(65000_u16);
     assert!(a.succeeds(b));
     assert!(a.succeeds_or_eq(b));
+    assert!(!a.precedes_or_eq(b));
     assert!(b.precedes(a));
     assert!(b.precedes_or_eq(a));
+    assert!(!b.succeeds_or_eq(a));
 
     let dist = b.dist(a);
     let expected_diff = MAX_U16 - 65000 + 5 + 1;

@@ -24,10 +24,18 @@ proptest! {
         if !serial.is_nan() {
             assert!(serial.precedes(a));
             assert!(serial.precedes_or_eq(a));
+            assert!(!serial.succeeds_or_eq(a));
+            assert!(!serial.succeeds(a));
+
             assert!(serial.precedes(b));
             assert!(serial.precedes_or_eq(b));
+            assert!(!serial.succeeds_or_eq(b));
+            assert!(!serial.succeeds(b));
+
             assert!(serial.precedes(c));
             assert!(serial.precedes_or_eq(c));
+            assert!(!serial.succeeds_or_eq(c));
+            assert!(!serial.succeeds(c));
         } else {
             assert!(a.is_nan());
             assert!(b.is_nan());
