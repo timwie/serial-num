@@ -97,6 +97,7 @@ impl Serial {
 
     /// Increases `self` with wraparound.
     #[inline]
+    #[expect(clippy::arithmetic_side_effects, reason = "overflow is handled")]
     pub fn increase(&mut self) {
         if self.is_nan() {
             return;
@@ -131,6 +132,10 @@ impl Serial {
     /// If both are [`NAN`](Self::NAN), we say the distance is `0`.
     #[inline]
     #[must_use]
+    #[expect(
+        clippy::arithmetic_side_effects,
+        reason = "cannot overflow in the arithmetic"
+    )]
     pub fn dist(self, other: Self) -> u16 {
         if self.is_nan() && other.is_nan() {
             return 0;
@@ -146,10 +151,12 @@ impl Serial {
         let max = self.max(other);
 
         if min.0 < max.0 {
+            // min is predecessor, and counter is lower
+            // distance is: min->max
             max.0 - min.0
         } else {
-            // min is less, but has higher number
-            //  => sum these distances: min->MAX + 0->max + MAX->0
+            // min is predecessor, but counter is higher
+            // distance is: min->MAX + 0->max + MAX->0
             MAX_U16 - min.0 + max.0 + 1
         }
     }
@@ -165,6 +172,18 @@ impl Serial {
     /// is returned. If both are [`NAN`](Self::NAN), we say the difference is `0`.
     #[inline]
     #[must_use]
+    #[expect(
+        clippy::arithmetic_side_effects,
+        reason = "negating 'dist' <= 32767 won't overflow"
+    )]
+    #[expect(
+        clippy::as_conversions,
+        reason = "casting 'dist' <= 32767 to i16 won't overflow"
+    )]
+    #[expect(
+        clippy::cast_possible_wrap,
+        reason = "casting 'dist' <= 32767 to i16 won't overflow"
+    )]
     pub fn diff(self, other: Self) -> i16 {
         let dist = self.dist(other);
         if self.precedes(other) {
@@ -213,6 +232,10 @@ impl Serial {
     /// [RFC1982]: https://www.rfc-editor.org/rfc/rfc1982#section-3.2
     #[inline]
     #[must_use]
+    #[expect(
+        clippy::arithmetic_side_effects,
+        reason = "overflow is handled by comparing before the arithmetic"
+    )]
     pub fn partial_cmp(self, other: Self) -> Option<Ordering> {
         if self.is_nan() || other.is_nan() {
             return None;
@@ -314,11 +337,16 @@ impl Add<u16> for Serial {
     ///
     /// If `self.is_nan()`, then the returned serial number is also [`NAN`](Self::NAN).
     #[inline]
+    #[expect(
+        clippy::arithmetic_side_effects,
+        reason = "the addition cannot overflow"
+    )]
+    #[expect(clippy::as_conversions, reason = "cannot overflow after modulo usage")]
     fn add(self, rhs: u16) -> Self::Output {
         if self.is_nan() {
             return self;
         }
-        let n = (u32::from(self.0) + u32::from(rhs)) % (NAN_U32);
+        let n = (u32::from(self.0) + u32::from(rhs)) % NAN_U32;
         Self(n as u16)
     }
 }

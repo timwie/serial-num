@@ -91,6 +91,7 @@ features = ["alloc", "size_32"]
 [lints.rust]
 elided_lifetimes_in_paths = "deny"
 legacy_derive_helpers = "deny"
+unexpected_cfgs = { level = "deny", check-cfg = ['cfg(kani)'] }
 unknown_lints = "deny"
 unreachable_pub = "deny"
 unsafe-code = "deny"
