@@ -1,4 +1,7 @@
 ## Release Notes
+### Unreleased
+* **Breaking**: Increase MSRV to `1.81.0`
+
 ### [0.10.0] - 2024-07-17
 * Add `or()` function to `Serial`
 * Add `or_default()` function to `Serial`
