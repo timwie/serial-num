@@ -1,4 +1,4 @@
-use crate::{ArchivedSerial, Serial};
+use super::*;
 use proptest::prelude::*;
 use proptest_arbitrary_interop::arb;
 

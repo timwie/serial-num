@@ -1,4 +1,4 @@
-use crate::{Serial, ArchivedSerial};
+use super::*;
 
 #[kani::proof]
 fn check_increase() {
