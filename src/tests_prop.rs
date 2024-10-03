@@ -1,4 +1,4 @@
-use crate::Serial;
+use crate::{ArchivedSerial, Serial};
 use proptest::prelude::*;
 use proptest_arbitrary_interop::arb;
 
@@ -146,19 +146,22 @@ proptest! {
     #[cfg(feature = "rkyv")]
     #[allow(unsafe_code)]
     fn rkyv_roundtrip(expected in arb::<Serial>()) {
-        let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+        let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-        let actual = unsafe { rkyv::archived_root::<Serial>(&bytes[..]) };
-        assert_eq!(actual, &expected);
+        let archived =
+            unsafe { rkyv::access_unchecked::<ArchivedSerial>(&bytes[..]) };
+
+        assert_eq!(archived, &expected);
     }
 
     #[test]
     #[cfg(feature = "rkyv-safe")]
     fn rkyv_safe_roundtrip(expected in arb::<Serial>()) {
-        let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+        let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-        let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
-        assert_eq!(actual, &expected);
+        let archived = rkyv::access::<ArchivedSerial, rkyv::rancor::Error>(&bytes[..]).unwrap();
+
+        assert_eq!(archived, &expected);
     }
 
     #[test]

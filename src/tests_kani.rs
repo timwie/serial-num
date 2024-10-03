@@ -1,4 +1,4 @@
-use crate::Serial;
+use crate::{Serial, ArchivedSerial};
 
 #[kani::proof]
 fn check_increase() {
@@ -125,29 +125,31 @@ fn bytemuck_cast_roundtrip() {
     assert_eq!(original, casted_back);
 }
 
-// TODO: kani proof fails
+// TODO: kani proof loops
 // #[kani::proof]
 #[cfg(feature = "rkyv")]
 #[allow(unsafe_code)]
 fn check_rkyv() {
     let expected = Serial(kani::any());
 
-    let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-    let actual = unsafe { rkyv::archived_root::<Serial>(&bytes[..]) };
-    assert_eq!(actual, &expected);
+    let archived = unsafe { rkyv::access_unchecked::<ArchivedSerial>(&bytes[..]) };
+
+    assert_eq!(archived, &expected);
 }
 
-// TODO: kani proof fails
+// TODO: kani proof loops
 // #[kani::proof]
 #[cfg(feature = "rkyv")]
 fn check_rkyv_safe() {
     let expected = Serial(kani::any());
 
-    let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-    let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
-    assert_eq!(actual, &expected);
+    let archived = rkyv::access::<ArchivedSerial, rkyv::rancor::Error>(&bytes[..]).unwrap();
+
+    assert_eq!(archived, &expected);
 }
 
 #[cfg(feature = "speedy")]

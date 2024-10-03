@@ -1,6 +1,7 @@
 ## Release Notes
 ### Unreleased
 * **Breaking**: Increase MSRV to `1.81.0`
+* **Breaking**: Bump `rkyv` to `>=0.8,<1`
 
 ### [0.10.0] - 2024-07-17
 * Add `or()` function to `Serial`

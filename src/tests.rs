@@ -360,10 +360,11 @@ fn rkyv_roundtrip() {
     for n in CANDIDATES {
         let expected = Serial(n);
 
-        let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+        let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-        let actual = unsafe { rkyv::archived_root::<Serial>(&bytes[..]) };
-        assert_eq!(actual, &expected);
+        let archived = unsafe { rkyv::access_unchecked::<ArchivedSerial>(&bytes[..]) };
+
+        assert_eq!(archived, &expected);
     }
 }
 
@@ -373,10 +374,11 @@ fn rkyv_safe_roundtrip() {
     for n in CANDIDATES {
         let expected = Serial(n);
 
-        let bytes = rkyv::to_bytes::<_, 256>(&expected).unwrap();
+        let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(&expected).unwrap();
 
-        let actual = rkyv::check_archived_root::<Serial>(&bytes[..]).unwrap();
-        assert_eq!(actual, &expected);
+        let archived = rkyv::access::<ArchivedSerial, rkyv::rancor::Error>(&bytes[..]).unwrap();
+
+        assert_eq!(archived, &expected);
     }
 }
 
@@ -389,7 +391,7 @@ fn arbitrary() {
 
     let mut unstructured = Unstructured::new(raw_data);
 
-    _ = Serial::arbitrary(&mut unstructured).unwrap();
+    let _ = Serial::arbitrary(&mut unstructured).unwrap();
 }
 
 #[test]

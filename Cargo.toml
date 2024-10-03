@@ -50,7 +50,7 @@ features = ["experimental-derive"]
 optional = true
 
 [dependencies.rkyv]
-version = ">=0.7,<1"
+version = ">=0.8,<1"
 default-features = false
 optional = true
 
@@ -72,8 +72,8 @@ bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
 bytemuck = ["dep:bytemuck"]
 postcard = ["dep:postcard"]
-rkyv = ["rkyv/size_32"]
-rkyv-safe = ["rkyv/size_32", "rkyv/validation"]
+rkyv = ["rkyv/pointer_width_32"]
+rkyv-safe = ["rkyv/pointer_width_32", "rkyv/bytecheck"]
 serde = ["dep:serde"]
 speedy = ["dep:speedy"]
 
@@ -84,9 +84,9 @@ proptest-arbitrary-interop = "~0.1"
 serde_json = "1.0"
 
 [dev-dependencies.rkyv]
-version = ">=0.7,<1"
+version = ">=0.8,<1"
 default-features = false
-features = ["alloc", "size_32"]
+features = ["alloc", "pointer_width_32"]
 
 [lints.rust]
 elided_lifetimes_in_paths = "deny"

@@ -67,11 +67,12 @@ use core::ops::Add;
 )]
 #[cfg_attr(
     feature = "rkyv",
-    derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize),
-    archive(compare(PartialEq)),
-    archive_attr(derive(Clone, Copy, Debug))
+    derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize)
 )]
-#[cfg_attr(feature = "rkyv-safe", archive(check_bytes))]
+#[cfg_attr(
+    feature = "rkyv",
+    rkyv(compare(PartialEq), derive(Clone, Copy, Debug),)
+)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "speedy", derive(speedy::Readable, speedy::Writable))]
 pub struct Serial(u16);
