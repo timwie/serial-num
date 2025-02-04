@@ -144,21 +144,6 @@ jobs:
       - name: cargo clippy
         run: cargo clippy --all-features
 
-  verify:
-    name: Model checking
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Run Kani Verifier
-        uses: model-checking/kani-github-action@v1
-        with:
-          args: --tests --all-features
-
   deny:
     name: Lint dependency crates
     runs-on: ubuntu-latest

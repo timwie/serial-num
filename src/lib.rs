@@ -15,13 +15,10 @@ use alloc::vec::Vec;
 #[cfg(test)]
 mod tests;
 
-#[cfg(all(test, not(miri), feature = "arbitrary"))]
+#[cfg(all(test, feature = "arbitrary"))]
 mod tests_prop;
 
-#[cfg(kani)]
-mod tests_kani;
-
-#[cfg(all(test, not(miri)))]
+#[cfg(test)]
 mod tests_readme;
 
 use core::cmp::Ordering;

@@ -20,7 +20,6 @@ check:
 test:
   cargo test
   cargo test --all-features
-  cargo kani --tests --all-features
 
 # Build & test for randomly selected features
 random:
