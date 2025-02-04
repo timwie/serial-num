@@ -1,9 +1,16 @@
 #![doc = include_str!("crate.md")]
 #![doc = include_str!("examples.md")]
-#![cfg_attr(
-    not(any(test, feature = "arbitrary", feature = "bitcode", feature = "speedy",)),
-    no_std
-)]
+
+#![no_std]
+
+#[cfg(any(test, feature = "arbitrary", feature = "speedy"))]
+extern crate std;
+
+#[cfg(feature = "bitcode")]
+extern crate alloc;
+
+#[cfg(feature = "bitcode")]
+use alloc::vec::Vec;
 
 #[cfg(test)]
 mod tests;
@@ -62,7 +69,7 @@ use core::ops::Add;
     feature = "postcard",
     derive(
         postcard::experimental::max_size::MaxSize,
-        postcard::experimental::schema::Schema
+        postcard_schema::Schema
     )
 )]
 #[cfg_attr(

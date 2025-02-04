@@ -29,7 +29,9 @@ features = ["derive"]
 optional = true
 
 [dependencies.bitcode]
-version = ">=0.4,<1"
+version = ">=0.6,<1"
+default-features = false
+features = ["derive"]
 optional = true
 
 [dependencies.borsh]
@@ -44,9 +46,14 @@ features = ["derive"]
 optional = true
 
 [dependencies.postcard]
-version = "^1"
+version = "^1.1"
 default-features = false
 features = ["experimental-derive"]
+optional = true
+
+[dependencies.postcard-schema]
+version = "0.2.0"
+features = ["derive"]
 optional = true
 
 [dependencies.rkyv]
@@ -71,7 +78,7 @@ bincode = ["dep:bincode"]
 bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
 bytemuck = ["dep:bytemuck"]
-postcard = ["dep:postcard"]
+postcard = ["dep:postcard", "dep:postcard-schema"]
 rkyv = ["rkyv/pointer_width_32"]
 rkyv-safe = ["rkyv/pointer_width_32", "rkyv/bytecheck"]
 serde = ["dep:serde"]
@@ -79,7 +86,7 @@ speedy = ["dep:speedy"]
 
 [dev-dependencies]
 postcard = { version = "^1", default-features = true }
-proptest = "~1.5"
+proptest = "~1.6"
 proptest-arbitrary-interop = "~0.1"
 serde_json = "1.0"
 
