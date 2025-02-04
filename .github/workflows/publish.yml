@@ -48,17 +48,17 @@ jobs:
       - name: cargo build
         run: cargo build --all-features --release
 
-      - name: cargo build for i686-unknown-linux-gnu
-        run: >
-          cargo build
-          --target i686-unknown-linux-gnu
-          --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
-          --release
-
       - name: cargo build for thumbv6m-none-eabi
         run: >
           cargo build
           --target thumbv6m-none-eabi
+          --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+          --release
+
+      - name: cargo build for i686-unknown-linux-gnu
+        run: >
+          cargo build
+          --target i686-unknown-linux-gnu
           --features bincode,bitcode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
           --release
 
