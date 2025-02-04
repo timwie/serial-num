@@ -1,6 +1,5 @@
 #![doc = include_str!("crate.md")]
 #![doc = include_str!("examples.md")]
-
 #![no_std]
 
 #[cfg(any(test, feature = "arbitrary", feature = "speedy"))]
@@ -64,10 +63,7 @@ use core::ops::Add;
 #[cfg_attr(feature = "bytemuck", derive(bytemuck::Pod, bytemuck::Zeroable))]
 #[cfg_attr(
     feature = "postcard",
-    derive(
-        postcard::experimental::max_size::MaxSize,
-        postcard_schema::Schema
-    )
+    derive(postcard::experimental::max_size::MaxSize, postcard_schema::Schema)
 )]
 #[cfg_attr(
     feature = "rkyv",
