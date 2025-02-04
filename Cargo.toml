@@ -122,6 +122,7 @@ restriction = {level = "deny", priority = -1 }
 pedantic = {level = "deny", priority = -1 }
 
 absolute_paths = "allow"
+arbitrary_source_item_ordering = "allow"
 blanket_clippy_restriction_lints = "allow"
 decimal_literal_representation = "allow"
 implicit_return = "allow"
