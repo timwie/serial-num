@@ -1,0 +1,69 @@
+name: Test crate
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    paths:
+      - '.github/workflows/test.yml'
+      - 'src/**.md'
+      - '**.rs'
+      - '**.lock'
+      - '**.toml'
+
+# Declare default permissions as read only.
+permissions: read-all
+
+env:
+  # Disable incremental compilation for faster from-scratch builds
+  CARGO_INCREMENTAL: 0
+  # Number of times to retry network errors
+  CARGO_NET_RETRY: 10
+  # Remove debug info to decrease the size of the ./target directory for caching efficiency
+  CARGO_PROFILE_DEV_DEBUG: 0
+
+jobs:
+  test:
+    name: cargo nextest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.81.0  # MSRV
+    steps:
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install nextest & cargo-llvm-cov
+        uses: taiki-e/install-action@v2
+        with:
+          tool: nextest,cargo-llvm-cov
+
+      - name: cargo nextest
+        run: >
+          cargo llvm-cov nextest
+          --ignore-filename-regex tests
+          --all-features
+          --codecov
+          --output-path codecov.json
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: codecov.json

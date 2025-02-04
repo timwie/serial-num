@@ -1,4 +1,4 @@
-name: Publish crate release
+name: Upload to crates.io
 
 on:
   workflow_dispatch:
@@ -18,8 +18,8 @@ env:
   CARGO_PROFILE_DEV_DEBUG: 0
 
 jobs:
-  test:
-    name: Build and test crate
+  build:
+    name: cargo build
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -46,36 +46,59 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: cargo build
-        run: cargo build --all-features
+        run: cargo build --all-features --release
 
       - name: cargo build for i686-unknown-linux-gnu
-        run: cargo build --target i686-unknown-linux-gnu --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+        run: >
+          cargo build
+          --target i686-unknown-linux-gnu
+          --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+          --release
 
       - name: cargo build for thumbv6m-none-eabi
-        run: cargo build --target thumbv6m-none-eabi --features bincode,bitcode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+        run: >
+          cargo build
+          --target thumbv6m-none-eabi
+          --features bincode,bitcode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+          --release
 
-      - name: cargo test with no features
-        run: cargo test
-
-      - name: cargo test with all features
-        run: cargo test --all-features
-
-  deny:
-    name: Lint dependency crates
+  test:
+    name: cargo nextest
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.81.0  # MSRV
     steps:
+      - name: Install Rust toolchain with rustup
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: cargo deny
-        uses: EmbarkStudios/cargo-deny-action@v2
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: nextest
+
+      - name: cargo nextest
+        run: cargo nextest run --all-features
 
   publish:
-    name: Upload release to crates.io
-    needs: [test, deny]  # do not publish if something fails
+    name: cargo publish
+    needs: [build, test]  # do not publish if something fails
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
