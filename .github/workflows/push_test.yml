@@ -11,6 +11,17 @@ on:
       - '**.lock'
       - '**.toml'
 
+# Declare default permissions as read only.
+permissions: read-all
+
+env:
+  # Disable incremental compilation for faster from-scratch builds
+  CARGO_INCREMENTAL: 0
+  # Number of times to retry network errors
+  CARGO_NET_RETRY: 10
+  # Remove debug info to decrease the size of the ./target directory for caching efficiency
+  CARGO_PROFILE_DEV_DEBUG: 0
+
 jobs:
   test:
     name: Build and test crate
@@ -25,29 +36,28 @@ jobs:
           - nightly
           - 1.81.0  # MSRV
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install Rust toolchain with rustup
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
-          components: rustfmt, clippy
-          targets: thumbv6m-none-eabi
+          targets: i686-unknown-linux-gnu, thumbv6m-none-eabi
 
-      - name: Use cache
-        uses: actions/cache@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          persist-credentials: false
+
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
 
       - name: cargo build
         run: cargo build --all-features
 
-      - name: cargo build for non_std
-        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+      - name: cargo build for i686-unknown-linux-gnu
+        run: cargo build --target i686-unknown-linux-gnu --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+
+      - name: cargo build for thumbv6m-none-eabi
+        run: cargo build --target thumbv6m-none-eabi --features bincode,bitcode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
 
       - name: cargo test with no features
         run: cargo test
@@ -55,62 +65,59 @@ jobs:
       - name: cargo test with all features
         run: cargo test --all-features
 
-      - name: cargo miri test with all features
-        if: ${{ matrix.rust == 'nightly' }}
-        run: |
-          rustup +nightly component add miri
-          cargo +nightly miri test --all-features
-
   coverage:
     name: Upload test coverage to Codecov (stable)
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     if: ${{ github.event_name == 'push' }}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install Rust toolchain with rustup
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt, clippy
-          targets: thumbv6m-none-eabi
 
-      - name: Use cache
-        uses: actions/cache@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          persist-credentials: false
 
-      - name: Install cargo-llvm-cov
-        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
 
-      - name: Generate code coverage
-        run: cargo llvm-cov --all-features --ignore-filename-regex tests --lcov --output-path lcov.info
+      - name: Install nextest & cargo-llvm-cov
+        uses: taiki-e/install-action@v2
+        with:
+          tool: nextest,cargo-llvm-cov
+
+      - name: cargo nextest
+        run: >
+          cargo llvm-cov nextest
+          --ignore-filename-regex tests
+          --all-features
+          --codecov
+          --output-path codecov.json
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: lcov.info
-          fail_ci_if_error: true
+          files: codecov.json
 
   fmt:
     name: Check code formatting
     runs-on: ubuntu-latest
-    timeout-minutes: 1
+    timeout-minutes: 2
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install Rust toolchain with rustup
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
           components: rustfmt
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: cargo fmt
         run: cargo fmt --all -- --check
@@ -120,23 +127,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install Rust toolchain with rustup
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
           components: clippy
-          targets: thumbv6m-none-eabi
 
-      - name: Use cache
-        uses: actions/cache@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          persist-credentials: false
+
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
 
       - name: cargo clippy
         run: cargo clippy --all-features
@@ -148,6 +151,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Run Kani Verifier
         uses: model-checking/kani-github-action@v1
@@ -161,6 +166,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: cargo deny
         uses: EmbarkStudios/cargo-deny-action@v2

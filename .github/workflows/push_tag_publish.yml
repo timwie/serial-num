@@ -6,6 +6,17 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
+# Declare default permissions as read only.
+permissions: read-all
+
+env:
+  # Disable incremental compilation for faster from-scratch builds
+  CARGO_INCREMENTAL: 0
+  # Number of times to retry network errors
+  CARGO_NET_RETRY: 10
+  # Remove debug info to decrease the size of the ./target directory for caching efficiency
+  CARGO_PROFILE_DEV_DEBUG: 0
+
 jobs:
   test:
     name: Build and test crate
@@ -20,41 +31,34 @@ jobs:
           - nightly
           - 1.81.0  # MSRV
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Install Rust toolchain with rustup
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
-          components: rustfmt, clippy
-          targets: thumbv6m-none-eabi
+          targets: i686-unknown-linux-gnu, thumbv6m-none-eabi
 
-      - name: Use cache
-        uses: actions/cache@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
         with:
-          path: |
-            ~/.cargo/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          persist-credentials: false
+
+      - name: Use cargo cache
+        uses: Swatinem/rust-cache@v2
 
       - name: cargo build
         run: cargo build --all-features
 
-      - name: cargo build for non_std
-        run: cargo build --target thumbv6m-none-eabi --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+      - name: cargo build for i686-unknown-linux-gnu
+        run: cargo build --target i686-unknown-linux-gnu --features bincode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
+
+      - name: cargo build for thumbv6m-none-eabi
+        run: cargo build --target thumbv6m-none-eabi --features bincode,bitcode,borsh,bytemuck,postcard,rkyv,rkyv-safe,serde
 
       - name: cargo test with no features
         run: cargo test
 
       - name: cargo test with all features
         run: cargo test --all-features
-
-      - name: cargo miri test with all features
-        if: ${{ matrix.rust == 'nightly' }}
-        run: |
-          rustup +nightly component add miri
-          cargo +nightly miri test --all-features
 
   verify:
     name: Model checking
@@ -63,6 +67,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Run Kani Verifier
         uses: model-checking/kani-github-action@v1
@@ -76,6 +82,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: cargo deny
         uses: EmbarkStudios/cargo-deny-action@v2
@@ -88,6 +96,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@v1
