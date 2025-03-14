@@ -1,7 +1,8 @@
 ## Release Notes
 ### Unreleased
-* **Breaking**: Increase MSRV to `1.81.0`
+* **Breaking**: Increase MSRV to `1.85.0`
 * **Breaking**: Bump `rkyv` to `>=0.8,<1`
+* **Breaking**: Bump `bincode` to `^2`
 * **Breaking**: Bump `bitcode` to `>=0.6,<1`
 * **Breaking**: Bump `postcard` to `^1.1`
 

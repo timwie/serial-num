@@ -1,5 +1,5 @@
-#![doc = include_str!("crate.md")]
-#![doc = include_str!("examples.md")]
+#![cfg_attr(doc, doc = include_str!("crate.md"))]
+#![cfg_attr(doc, doc = include_str!("examples.md"))]
 #![no_std]
 
 #[cfg(any(test, feature = "arbitrary", feature = "speedy"))]
@@ -7,9 +7,6 @@ extern crate std;
 
 #[cfg(feature = "bitcode")]
 extern crate alloc;
-
-#[cfg(feature = "bitcode")]
-use alloc::vec::Vec;
 
 #[cfg(test)]
 mod tests;
@@ -49,7 +46,7 @@ use core::ops::Add;
 /// The final value in the number space, `u16::MAX`, is reserved for the special
 /// [`NAN`](Self::NAN) value. This is done to save space - you don't need to wrap
 /// this type in an `Option` if only some items are assigned a serial number.
-#[doc = include_str!("examples.md")]
+#[cfg_attr(doc, doc = include_str!("examples.md"))]
 #[must_use]
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, Default, PartialEq, Eq, Hash)]

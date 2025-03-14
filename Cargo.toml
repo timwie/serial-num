@@ -8,8 +8,8 @@ categories = ["network-programming", "no-std"]
 description = "Serial number type with wraparound"
 keywords = ["serial", "number", "rfc-1982", "ack", "udp"]
 license = "MIT OR Apache-2.0"
-edition = "2021"
-rust-version = "1.81"
+edition = "2024"
+rust-version = "1.85"
 include = [
     "src/*.md",
     "src/lib.rs",
@@ -23,7 +23,7 @@ features = ["derive"]
 optional = true
 
 [dependencies.bincode]
-version = "^2.0.0-rc.3"
+version = "^2"
 default-features = false
 features = ["derive"]
 optional = true
