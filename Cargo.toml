@@ -56,6 +56,14 @@ version = "0.2.0"
 features = ["derive"]
 optional = true
 
+[dependencies.proptest]
+version = "^1"
+optional = true
+
+[dependencies.proptest-derive]
+version = ">=0.5"
+optional = true
+
 [dependencies.rkyv]
 version = ">=0.8,<1"
 default-features = false
@@ -79,6 +87,7 @@ bitcode = ["dep:bitcode"]
 borsh = ["dep:borsh"]
 bytemuck = ["dep:bytemuck"]
 postcard = ["dep:postcard", "dep:postcard-schema"]
+proptest = ["dep:proptest", "dep:proptest-derive"]
 rkyv = ["rkyv/pointer_width_32"]
 rkyv-safe = ["rkyv/pointer_width_32", "rkyv/bytecheck"]
 serde = ["dep:serde"]
@@ -86,8 +95,7 @@ speedy = ["dep:speedy"]
 
 [dev-dependencies]
 postcard = { version = "^1", default-features = true }
-proptest = "~1.6"
-proptest-arbitrary-interop = "~0.1"
+proptest = { version = "^1", default-features = true }
 serde_json = "1.0"
 
 [dev-dependencies.rkyv]
@@ -131,6 +139,7 @@ min_ident_chars = "allow"
 missing_docs_in_private_items = "allow"
 missing_trait_methods = "allow"
 question_mark_used = "allow"
+separated_literal_suffix = "allow"
 
 arithmetic_side_effects = "warn"
 as_conversions = "warn"

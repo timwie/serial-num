@@ -34,16 +34,17 @@ serial-num = { version = "0.10", features = ["serde"] }
 
 ## Feature Flags
 The following feature flags implement additional traits for the `Serial` type:
-* `arbitrary`: derives [arbitrary]'s `Arbitrary` (⚠️ requires `std`)
+* `arbitrary`: derives [arbitrary]'s `Arbitrary`
 * `bincode`: derives [bincode]'s `Decode/Encode`
 * `bitcode`: derives [bitcode]'s `Decode/Encode`
 * `borsh`: derives [borsh]'s `BorshDeserialize/BorshSerialize`
 * `bytemuck`: derives [bytemuck]'s `Pod/Zeroable`
 * `postcard`: derives [postcard]'s `Schema/MaxSize`
+* `proptest`: derives [proptest]'s `Arbitrary`
 * `rkyv`: derives [rkyv]'s `Archive/Deserialize/Serialize`
 * `rkyv-safe`: additionally enables [rkyv]’s safe API
 * `serde`: derives [serde]'s `Deserialize/Serialize`
-* `speedy`: derives [speedy]'s `Readable/Writable` (⚠️ requires `std`)
+* `speedy`: derives [speedy]'s `Readable/Writable`
 
 [arbitrary]: https://crates.io/crates/arbitrary
 [bincode]: https://crates.io/crates/bincode
@@ -51,6 +52,7 @@ The following feature flags implement additional traits for the `Serial` type:
 [borsh]: https://crates.io/crates/borsh
 [bytemuck]: https://crates.io/crates/bytemuck
 [postcard]: https://crates.io/crates/postcard
+[proptest]: https://crates.io/crates/proptest
 [rkyv]: https://crates.io/crates/rkyv
 [serde]: https://crates.io/crates/serde
 [speedy]: https://crates.io/crates/speedy

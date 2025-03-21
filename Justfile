@@ -24,7 +24,7 @@ test:
 # Build & test for randomly selected features
 random:
   #!/usr/bin/env bash
-  FEATURES=('arbitrary' 'bincode' 'bitcode' 'borsh' 'bytemuck' 'postcard' 'rkyv' 'rkyv-safe' 'serde' 'speedy')
+  FEATURES=('arbitrary' 'bincode' 'bitcode' 'borsh' 'bytemuck' 'postcard' 'proptest' 'rkyv' 'rkyv-safe' 'serde' 'speedy')
   NUM_SELECTED=$(shuf -i 2-${#FEATURES[@]} -n 1)
   SELECTED=$(shuf -e ${FEATURES[@]} -n $NUM_SELECTED | paste -sd, -)
   echo "Randomly selected '$SELECTED'"

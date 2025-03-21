@@ -11,7 +11,7 @@ extern crate alloc;
 #[cfg(test)]
 mod tests;
 
-#[cfg(all(test, feature = "arbitrary"))]
+#[cfg(all(test, feature = "proptest"))]
 mod tests_prop;
 
 #[cfg(test)]
@@ -62,6 +62,7 @@ use core::ops::Add;
     feature = "postcard",
     derive(postcard::experimental::max_size::MaxSize, postcard_schema::Schema)
 )]
+#[cfg_attr(feature = "proptest", derive(proptest_derive::Arbitrary))]
 #[cfg_attr(
     feature = "rkyv",
     derive(rkyv::Archive, rkyv::Deserialize, rkyv::Serialize)
@@ -74,11 +75,11 @@ use core::ops::Add;
 #[cfg_attr(feature = "speedy", derive(speedy::Readable, speedy::Writable))]
 pub struct Serial(u16);
 
-const NAN_U16: u16 = u16::MAX;
-const NAN_U32: u32 = 65_535;
-const MAX_U16: u16 = u16::MAX - 1;
-const MID_I32: i32 = 32_767;
-const MID_U16: u16 = 32_767;
+const NAN_U16: u16 = 65_535_u16;
+const NAN_U32: u32 = 65_535_u32;
+const MAX_U16: u16 = 65_534_u16;
+const MID_I32: i32 = 32_767_i32;
+const MID_U16: u16 = 32_767_u16;
 
 impl Serial {
     /// Special value representing "no serial number".
@@ -300,21 +301,13 @@ impl Serial {
     /// Returns `self` if it's not `NAN`, otherwise returns `other`.
     #[inline]
     pub fn or(self, other: Self) -> Self {
-        if self.is_nan() {
-            other
-        } else {
-            self
-        }
+        if self.is_nan() { other } else { self }
     }
 
     /// Returns `self` if it's not `NAN`, otherwise returns `Serial::default()`.
     #[inline]
     pub fn or_default(self) -> Self {
-        if self.is_nan() {
-            Self::default()
-        } else {
-            self
-        }
+        if self.is_nan() { Self::default() } else { self }
     }
 
     /// Replaces `self` with `NAN`, returning the previous value.
